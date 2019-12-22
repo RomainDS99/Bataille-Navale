@@ -167,8 +167,13 @@ if __name__ == "__main__":
 	score = 0
 	menu = True
 	jouer = False
-	#navires=[[1, 1, 1, 1, 1, 1]],[[2, 2], [2, 2], [2, 2], [2, 2]],[[3, 3, 3], [3, 3, 3], [3, 3, 3]], 
-	#[[4, 4, 4, 4], [4, 4, 4, 4], [4, 4, 4, 4]], [[5, 5], [5, 5], [5, 5], [5, 5], [5, 5]] [[6], [6], [6], [6], [6], [6]]
+
+	navires = []
+	for x in range(1, 7):
+		for y in range(7-x):
+			navires.append(x)
+	
+
 	choix_mode = [("Mode classique ", 640, 200),  
 		("Mode aléatoire", 640, 300),
 		("Mode prof", 640, 400),
