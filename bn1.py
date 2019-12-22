@@ -1,4 +1,3 @@
-#bien vu ca marche
 from upemtk import *
 from random import randint
 
@@ -20,37 +19,46 @@ def placer_bateau(x, y, taille, direction, plateau):
 	plateau[y][x]=1
 	for i in range(taille):
 		if direction == 0:
-			if 0 <= y - i < hauteur_plateau and 0 <= x < largeur_plateau:
 				plateau[y-i][x]=1
-			else:
-				return False
 
 		elif direction == 1:
-			if 0 <= y < hauteur_plateau and 0 <= x + i < largeur_plateau:
 				plateau[y][x+i]=1
-			else:
-				return False
 
 		elif direction == 2:
-			if 0 <= y + i < hauteur_plateau and 0 <= x < largeur_plateau:
 				plateau[y+i][x]=1
-			else:
-				return False
 
 		elif direction == 3:
-			if 0 <= y < hauteur_plateau and 0 <= x - i < largeur_plateau:
 				plateau[y][x-i]=1
-			else:
-				return False
 
-	return True
+	
 
 def demande():
-	x = int(input("abscisse de la tete du bateau:"))
-	y = int(input("ordonnée de la tete du bateau: "))
+	x = saisie_controlee("abscisse de la tete du bateau: ")
+	y = saisie_controlee("ordonnée de la tete du bateau: ")
 	taille = int(input("taille du bateau en cases: "))
+	while taille > 6:
+		print("Mauvaise saisie.")
+		taille = int(input("taille du bateau en cases: "))
 	direction = int(input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] "))
 	return x, y, taille, direction
+
+def control_placement(x, y, taille, direction):
+	if direction == 0:
+		if y >= taille:
+			return True 
+		return False
+	if direction == 1:
+		if x + taille <= len(plateau1[0]):
+			return True
+		return False
+	if direction == 2:
+		if y + taille <= len(plateau1):
+			return True 
+		return False
+	if direction == 3:
+		if x >= taille:
+			return True 
+		return False
 
 	
 def tir(x, y, plateau):
@@ -115,22 +123,28 @@ def coule(plateau):
 			if plateau[x][y] != 1 and plateau[x][y] != 3 and plateau[x][y] != 4 and plateau[x][y] != 0:
 				plateau[x][y] = 5
 
+def saisie_controlee(msg):
+	while True:
+		x = input(msg)
+		if x.isdigit() and 0 <= int(x) <= 20:
+			return int(x)
+		print("Mauvaise saisie.")
+
 
 cree_fenetre(1500, 1000)
 plateau1 = init(20)
 dessine_grille(25, 25, plateau1)
-#navires=[1, 1, 1, 1, 1, 1],[[2, 2], [2, 2], [2, 2], [2, 2]],[[3, 3, 3], [3, 3, 3], [3, 3, 3]], [[4, 4, 4, 4], [4, 4, 4, 4], [4, 4, 4, 4]] [5, 5], [6]
+#navires=[1, 1, 1, 1, 1, 1],[[2, 2], [2, 2], [2, 2], [2, 2]],[[3, 3, 3], [3, 3, 3], [3, 3, 3], [3, 3, 3]], [[4, 4, 4, 4], [4, 4, 4, 4], [4, 4, 4, 4]] [[5, 5], [5, 5]], [6]
 
 placement = False
 while not placement:
 	x, y, taille, direction = demande()
-	if placer_bateau(x, y, taille, direction, plateau1) == False:
-		for i in range(len(plateau1)):
-			for j in range(len(plateau1[i])):
-				plateau1[j][i]=0 #ca marche que pour nord et ouest, pour sud et est ca met out of range 
+	if not control_placement(x, y, taille, direction):
+		continue
+	placer_bateau(x, y, taille, direction, plateau1)
+	#si il n'y a plus de bateau à placer placement = True
+	placement = True
 
-	elif placer_bateau(x, y, taille, direction, plateau1) == True:
-		placement = placer_bateau(x, y, taille, direction, plateau1)
 
 affiche_plateau(plateau1)
 dessine_grille(25, 25, plateau1)
@@ -146,5 +160,5 @@ affiche_plateau(plateau1)
 
 attend_fermeture()
 
-Bondoufle
+
 
