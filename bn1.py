@@ -145,4 +145,5 @@ affiche_plateau(plateau1)
 
 attend_fermeture()
 
+Bondoufle
 
