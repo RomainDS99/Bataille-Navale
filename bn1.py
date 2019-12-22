@@ -112,6 +112,13 @@ def hit(x, y, plateau):
 		for j in range(len(plateau[i])):
 			if plateau[j][i] == 2:
 				carre(i, j, "white", "cyan")
+			elif plateau[j][i] == 3:
+				point(i*taille_case+38, y*taille_case+38, couleur='black', epaisseur=5)
+			elif plateau[j][i] == 4:
+				point(i*taille_case+38, y*taille_case+38, couleur='red', epaisseur=5)
+			elif plateau[j][i] == 5: #coulé
+				carre(i, j, "red", "black")
+				point(i*taille_case+38, y*taille_case+38, couleur='red', epaisseur=3)
 
 
 
