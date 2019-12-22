@@ -44,19 +44,19 @@ def demande():
 
 def control_placement(x, y, taille, direction):
 	if direction == 0:
-		if y >= taille:
+		if y + 1 >= taille : #+1 car la matrice commence à 0
 			return True 
 		return False
-	if direction == 1:
-		if x + taille <= len(plateau1[0]):
+	if direction  == 1:
+		if x + taille + 1 <= len(plateau1[0]):
 			return True
 		return False
 	if direction == 2:
-		if y + taille <= len(plateau1):
+		if y + taille + 1 <= len(plateau1):
 			return True 
 		return False
 	if direction == 3:
-		if x >= taille:
+		if x + 1 >= taille:
 			return True 
 		return False
 
@@ -145,8 +145,9 @@ def coordonnées_clic(texte, x, y):
 def couler(plateau, taille, direction):
 	for x in range(len(plateau)):
 		for y in range(len(plateau)):
-			if plateau[y][x] = 2:
+			if plateau[y][x] == 2:
 				while plateau[y][x] != 1 and plateau[y][x] != 3  and plateau[y][x] != 4 and plateau[y][x] != 0:
+					pass
 					
 				
 			if plateau[x][y] != 1 and plateau[x][y] != 3 and plateau[x][y] != 4 and plateau[x][y] != 0:
@@ -166,8 +167,8 @@ if __name__ == "__main__":
 	score = 0
 	menu = True
 	jouer = False
-	navires=[[1, 1, 1, 1, 1, 1]],[[2, 2], [2, 2], [2, 2], [2, 2]],[[3, 3, 3], [3, 3, 3], [3, 3, 3]], 
-	[[4, 4, 4, 4], [4, 4, 4, 4], [4, 4, 4, 4]], [[5, 5], [5, 5], [5, 5], [5, 5], [5, 5]] [[6], [6], [6], [6], [6], [6]]
+	#navires=[[1, 1, 1, 1, 1, 1]],[[2, 2], [2, 2], [2, 2], [2, 2]],[[3, 3, 3], [3, 3, 3], [3, 3, 3]], 
+	#[[4, 4, 4, 4], [4, 4, 4, 4], [4, 4, 4, 4]], [[5, 5], [5, 5], [5, 5], [5, 5], [5, 5]] [[6], [6], [6], [6], [6], [6]]
 	choix_mode = [("Mode classique ", 640, 200),  
 		("Mode aléatoire", 640, 300),
 		("Mode prof", 640, 400),
