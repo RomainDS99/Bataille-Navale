@@ -1,9 +1,10 @@
 from upemtk import *
 from random import randint
+from time import sleep, time
 
 taille_case = 25
-largeur_plateau = 21 
-hauteur_plateau = 21
+largeur_plateau = 20 
+hauteur_plateau = 20
 
 def init(taille):
 	plateau=[]
@@ -17,48 +18,67 @@ def affiche_plateau(plateau):
 
 def placer_bateau(x, y, taille, direction, plateau):
 	plateau[y][x]=1
-	for i in range(taille):
-		if direction == 0:
-				plateau[y-i][x]=1
+	if taille == 1:
+		if 0 <= x < largeur_plateau and 0 <= y < hauteur_plateau:
+			return True
+	else:
+		for i in range(taille):
+			if direction == 0:
+				if 0 <= y - i < hauteur_plateau and 0 <= x < largeur_plateau:
+					plateau[y-i][x]=1
+				else:
+					return False
 
-		elif direction == 1:
-				plateau[y][x+i]=1
+			elif direction == 1:
+				if x + taille > largeur_plateau:
+					return False
+				elif (0 <= y < hauteur_plateau) and (0 <= x + i < largeur_plateau):
+					plateau[y][x+i]=1
+				else:
+					return False
 
-		elif direction == 2:
-				plateau[y+i][x]=1
+			elif direction == 2:
+				if y + taille > hauteur_plateau:
+					return False
+				elif (0 <= y + i < hauteur_plateau) and (0 <= x < largeur_plateau):
+					plateau[y+i][x]=1
+				else:
+					return False
 
-		elif direction == 3:
-				plateau[y][x-i]=1
+			elif direction == 3:
+				if 0 <= y < hauteur_plateau and 0 <= x - i < largeur_plateau:
+					plateau[y][x-i]=1
+				else:
+					return False
 
-	
+		return True
 
-def demande():
-	x = saisie_controlee("abscisse de la tete du bateau: ")
-	y = saisie_controlee("ordonnée de la tete du bateau: ")
-	taille = int(input("taille du bateau en cases: "))
-	while taille > 6:
-		print("Mauvaise saisie.")
-		taille = int(input("taille du bateau en cases: "))
+def demande(taille):
+	x = int(input("abscisse de la tete du bateau:"))
+	y = int(input("ordonnée de la tete du bateau: "))
 	direction = int(input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] "))
 	return x, y, taille, direction
 
-def control_placement(x, y, taille, direction):
-	if direction == 0:
-		if y + 1 >= taille : #+1 car la matrice commence à 0
-			return True 
-		return False
-	if direction  == 1:
-		if x + taille + 1 <= len(plateau1[0]):
-			return True
-		return False
-	if direction == 2:
-		if y + taille + 1 <= len(plateau1):
-			return True 
-		return False
-	if direction == 3:
-		if x + 1 >= taille:
-			return True 
-		return False
+def sortie_bateau(taille, plateau):
+	placement = False
+	while not placement:
+		x, y, taille, direction = demande(taille)
+		if placer_bateau(x, y, taille, direction, plateau) == False:
+			if direction == 0:
+				for i in range(y-taille, y+1):
+					plateau[i][x]=0
+			if direction == 1:
+				for i in range(x, len(plateau)):
+					plateau[y][i]=0
+			if direction == 2:
+				for i in range(y, len(plateau)):
+					plateau[i][x]=0
+			if direction == 3:
+				for i in range(x-taille, x+1):
+					plateau[y][i]=0
+
+		elif placer_bateau(x, y, taille, direction, plateau) == True:
+			placement = placer_bateau(x, y, taille, direction, plateau)
 
 	
 def tir(x, y, plateau):
@@ -105,8 +125,11 @@ def tir(x, y, plateau):
 		plateau[y][x] = 3
 		print("Dommage !")
 
+
+
 def carre(x, y, c1, c2):
 	rectangle(x*taille_case+taille_case, y*taille_case+taille_case, x*taille_case+2*taille_case, y*taille_case+2*taille_case, c1, c2)
+
 
 
 def dessine_grille(x, y, plateau):
@@ -121,14 +144,19 @@ def hit(x, y, plateau):
 		for j in range(len(plateau[i])):
 			if plateau[j][i] == 2:
 				carre(i, j, "white", "cyan")
-			elif plateau[j][i] == 3:
+			if plateau[j][i] == 3:
 				point(i*taille_case+38, y*taille_case+38, couleur='black', epaisseur=5)
-			elif plateau[j][i] == 4:
+			if plateau[j][i] == 4:
 				point(i*taille_case+38, y*taille_case+38, couleur='red', epaisseur=5)
-			elif plateau[j][i] == 5: #coulé
-				carre(i, j, "red", "black")
-				point(i*taille_case+38, y*taille_case+38, couleur='red', epaisseur=3)
 
+def touch(plateau):
+	toucher = True
+	while toucher:
+		x_tir = int(input("abscisse du tir: "))
+		y_tir = int(input("ordonnée du tir: "))
+		toucher = tir(x_tir, y_tir, plateau)
+		hit(x_tir, y_tir, plateau)
+		affiche_plateau(plateau)
 
 
 def coordonnées_clic(texte, x, y):
@@ -142,37 +170,20 @@ def coordonnées_clic(texte, x, y):
 	return (x - (largeur / 2), y - (hauteur / 2), x + (largeur / 2), y + (hauteur / 2))
 
 
-def couler(plateau, taille, direction):
+def couler(plateau):
 	for x in range(len(plateau)):
 		for y in range(len(plateau)):
-			if plateau[y][x] == 2:
-				while plateau[y][x] != 1 and plateau[y][x] != 3  and plateau[y][x] != 4 and plateau[y][x] != 0:
-					pass
-					
-				
 			if plateau[x][y] != 1 and plateau[x][y] != 3 and plateau[x][y] != 4 and plateau[x][y] != 0:
 				plateau[x][y] = 5
 
+if __name__ == "__main__":
 
-def saisie_controlee(msg):
-	while True:
-		x = input(msg)
-		if x.isdigit() and 0 <= int(x) <= 20:
-			return int(x)
-		print("Mauvaise saisie.")
-
-				
-# initialisation du jeu
-if __name__ == "__main__": 
+	# initialisation du jeu 
 	score = 0
 	menu = True
 	jouer = False
-
-	navires = []
-	for x in range(1, 7):
-		for y in range(7-x):
-			navires.append(x)
-	
+	joueur_1 = False
+	joueur_2 = False
 
 	choix_mode = [("Mode classique ", 640, 200),  
 		("Mode aléatoire", 640, 300),
@@ -185,11 +196,7 @@ if __name__ == "__main__":
 		rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
 		polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
 		ligne(200, 150, 200, 240, epaisseur=3)
-		ligne(75, 240, 325, 240, epaisseur=3)
-		ligne(75, 240, 100, 270, epaisseur=3)
-		ligne(325, 240, 300, 270, epaisseur=3)
-		ligne(100, 270, 300, 270, epaisseur=3)
-
+		polygone((75, 240, 325, 240, 300, 270, 100, 270, 75, 240), epaisseur=3)
 		for i in range(len(choix_mode)):
 			texte(640, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
 			texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
@@ -204,33 +211,65 @@ if __name__ == "__main__":
 				else:
 					menu = False
 
-
+	debut = time()
 	while jouer:
 		efface_tout()
+		#while joueur_1:
 		plateau1 = init(20)
 		dessine_grille(25, 25, plateau1)
+#navires=[1, 1, 1, 1, 1, 1],[[2, 2], [2, 2], [2, 2], [2, 2]],[[3, 3, 3], [3, 3, 3], [3, 3, 3]], [[4, 4, 4, 4], [4, 4, 4, 4], [4, 4, 4, 4]] [5, 5], [6]
 
-		placement = False
-		while not placement:
-			x, y, taille, direction = demande()
-			if not control_placement(x, y, taille, direction):
-				continue
-			placer_bateau(x, y, taille, direction, plateau1)
-			#si il n'y a plus de bateau à placer placement = True
-			placement = True
+		print("Veuillez rentrez les coordonnées et la direction de votre bateau de 6 cases [1]")
+		sortie_bateau(6, plateau1)
+		dessine_grille(25, 25, plateau1)
+
+		for i in range(2):
+			nb = 2 - i
+			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 5 cases [" + str(nb) + ']')
+			sortie_bateau(5, plateau1)
+			dessine_grille(25, 25, plateau1)
+
+		for i in range(3):
+			nb = 3 - i
+			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 4 cases [" + str(nb) + ']')
+			sortie_bateau(4, plateau1)
+			dessine_grille(25, 25, plateau1)
+
+		for i in range(4):
+			nb = 4 - i
+			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 3 cases [" + str(nb) + ']')
+			sortie_bateau(3, plateau1)
+			dessine_grille(25, 25, plateau1)
+
+		for i in range(5):
+			nb = 5 - i
+			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 2 cases [" + str(nb) + ']')
+			sortie_bateau(2, plateau1)
+			dessine_grille(25, 25, plateau1)
+
+		for i in range(6):
+			nb = 6 - i
+			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 1 case [" + str(nb) + ']')
+			sortie_bateau(1, plateau1)
+			dessine_grille(25, 25, plateau1)
+
+			#joueur_1 = True
+
+		#while joueur_2:
+		plateau2 = init(20)
+		dessine_grille(900, 25, plateau2)
+
+
 
 		affiche_plateau(plateau1)
+
 		dessine_grille(25, 25, plateau1)
-		toucher = True
-		while toucher:
-			x_tir = int(input("abscisse du tir: "))
-			y_tir = int(input("ordonnée du tir: "))
-			toucher = tir(x_tir, y_tir, plateau1)
-			hit(x_tir, y_tir, plateau1)
-			affiche_plateau(plateau1)
+
+		touch(plateau1)
 
 		affiche_plateau(plateau1)
 		
 
 
 		attend_fermeture()
+
