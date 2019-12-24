@@ -54,7 +54,7 @@ def placer_bateau(x, y, taille, direction, plateau):
 		return True
 
 def demande(taille):
-	x = int(input("abscisse de la tete du bateau:"))
+	x = int(input("abscisse de la tete du bateau: "))
 	y = int(input("ordonnée de la tete du bateau: "))
 	direction = int(input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] "))
 	return x, y, taille, direction
@@ -80,7 +80,58 @@ def sortie_bateau(taille, plateau):
 		elif placer_bateau(x, y, taille, direction, plateau) == True:
 			placement = placer_bateau(x, y, taille, direction, plateau)
 
-	
+			
+def dessine_bateau(plateau, x, y, j, j_bis):
+	texte(x, y, "Grille de bateaux de " + j, couleur='red', ancrage='nw', police='Helvetica', taille=30)
+	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de votre bateau de 6 cases [1]")
+	sortie_bateau(6, plateau)
+	efface(texte1)
+	dessine_grille(25, 25, plateau)
+
+	for i in range(2):
+		nb = 2 - i
+		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 5 cases [" + str(nb) + ']')
+		sortie_bateau(5, plateau)
+		efface(texte1)
+		dessine_grille(25, 25, plateau)	
+	efface(texte1)
+
+	for i in range(3):
+		nb = 3 - i
+		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 4 cases [" + str(nb) + ']')
+		sortie_bateau(4, plateau)
+		efface(texte1)
+		dessine_grille(25, 25, plateau)
+	efface(texte1)
+
+	for i in range(4):
+		nb = 4 - i
+		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 3 cases [" + str(nb) + ']')
+		sortie_bateau(3, plateau)
+		efface(texte1)
+		dessine_grille(25, 25, plateau)		
+	efface(texte1)
+
+	for i in range(5):
+		nb = 5 - i
+		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 2 cases [" + str(nb) + ']')
+		sortie_bateau(2, plateau)
+		efface(texte1)
+		dessine_grille(25, 25, plateau)
+	efface(texte1)
+
+	for i in range(6):
+		nb = 6 - i
+		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 1 case [" + str(nb) + ']')
+		sortie_bateau(1, plateau)
+		efface(texte1)
+		dessine_grille(25, 25, plateau)
+	efface(texte1)
+
+	efface(dessine_grille(25, 25, plateau1)) #efface pas la grille de j1 ni texte fin ca efface rien en fait 
+	texte(750, 500, "C'est au tour de " + j_bis + " de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+
+
 def tir(x, y, plateau):
 #touché
 	if plateau[y][x] == 1:
@@ -214,50 +265,14 @@ if __name__ == "__main__":
 	debut = time()
 	while jouer:
 		efface_tout()
-		#while joueur_1:
 		plateau1 = init(20)
 		dessine_grille(25, 25, plateau1)
-#navires=[1, 1, 1, 1, 1, 1],[[2, 2], [2, 2], [2, 2], [2, 2]],[[3, 3, 3], [3, 3, 3], [3, 3, 3]], [[4, 4, 4, 4], [4, 4, 4, 4], [4, 4, 4, 4]] [5, 5], [6]
-
-		print("Veuillez rentrez les coordonnées et la direction de votre bateau de 6 cases [1]")
-		sortie_bateau(6, plateau1)
-		dessine_grille(25, 25, plateau1)
-
-		for i in range(2):
-			nb = 2 - i
-			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 5 cases [" + str(nb) + ']')
-			sortie_bateau(5, plateau1)
-			dessine_grille(25, 25, plateau1)
-
-		for i in range(3):
-			nb = 3 - i
-			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 4 cases [" + str(nb) + ']')
-			sortie_bateau(4, plateau1)
-			dessine_grille(25, 25, plateau1)
-
-		for i in range(4):
-			nb = 4 - i
-			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 3 cases [" + str(nb) + ']')
-			sortie_bateau(3, plateau1)
-			dessine_grille(25, 25, plateau1)
-
-		for i in range(5):
-			nb = 5 - i
-			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 2 cases [" + str(nb) + ']')
-			sortie_bateau(2, plateau1)
-			dessine_grille(25, 25, plateau1)
-
-		for i in range(6):
-			nb = 6 - i
-			print("Veuillez rentrez les coordonnées et la direction de vos bateau de 1 case [" + str(nb) + ']')
-			sortie_bateau(1, plateau1)
-			dessine_grille(25, 25, plateau1)
-
-			#joueur_1 = True
-
-		#while joueur_2:
+		dessine_bateau(plateau1, 25, 530, 'j1', 'j2')
+		
+		
 		plateau2 = init(20)
 		dessine_grille(900, 25, plateau2)
+		dessine_bateau(plateau2, 900, 530, 'j2', 'j1')
 
 
 
