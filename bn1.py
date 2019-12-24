@@ -77,7 +77,8 @@ def sortie_bateau(taille, plateau):
 				for i in range(x-taille, x+1):
 					plateau[y][i]=0
 
-		elif placer_bateau(x, y, taille, direction, plateau) == True:
+		elif placer_bateau(x, y, taille, direction, plateau) == True: # faut faire en sorte que si il y a deja un bateau 
+			#que le truc redemande des coordoonnees
 			placement = placer_bateau(x, y, taille, direction, plateau)
 
 			
@@ -132,7 +133,7 @@ def dessine_bateau(plateau, x, y, j, j_bis):
 	texte(750, 500, "C'est au tour de " + j_bis + " de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
 
 
-def tir(x, y, plateau):
+def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans la fenetre 
 #touché
 	if plateau[y][x] == 1:
 		plateau[y][x] = 2
@@ -221,11 +222,17 @@ def coordonnées_clic(texte, x, y):
 	return (x - (largeur / 2), y - (hauteur / 2), x + (largeur / 2), y + (hauteur / 2))
 
 
-def couler(plateau):
+def couler(plateau): #faut faire cette putain de fonction jsp comment faire 
 	for x in range(len(plateau)):
 		for y in range(len(plateau)):
 			if plateau[x][y] != 1 and plateau[x][y] != 3 and plateau[x][y] != 4 and plateau[x][y] != 0:
 				plateau[x][y] = 5
+
+def bateaux_aleatoire():
+	#faut faire ca aussi
+	
+def prof_de_merde():
+	#faut faire une fonction pour afficher les 4 grilles en meme temps pour que les profs verifient ca marche
 
 if __name__ == "__main__":
 
