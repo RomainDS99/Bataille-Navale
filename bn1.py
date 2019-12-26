@@ -54,9 +54,12 @@ def placer_bateau(x, y, taille, direction, plateau):
 		return True
 
 def demande(taille):
-	x = int(input("abscisse de la tete du bateau: "))
-	y = int(input("ordonnée de la tete du bateau: "))
-	direction = int(input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] "))
+	# x = int(input("abscisse de la tete du bateau: "))
+	x = my_input("abscisse de la tete du bateau: ", "int")
+	# y = int(input("ordonnée de la tete du bateau: "))
+	y = my_input("ordonnée de la tete du bateau: ", "int")
+	# direction = int(input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] "))
+	direction = my_input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] ", "int")
 	return x, y, taille, direction
 
 def sortie_bateau(taille, plateau):
@@ -204,8 +207,10 @@ def hit(x, y, plateau):
 def touch(plateau):
 	toucher = True
 	while toucher:
-		x_tir = int(input("abscisse du tir: "))
-		y_tir = int(input("ordonnée du tir: "))
+		# x_tir = int(input("abscisse du tir: "))
+		x_tir = my_input("abscisse du tir: ", "int")
+		# y_tir = int(input("ordonnée du tir: "))
+		y_tir = my_input("ordonnée du tir: ", "int")
 		toucher = tir(x_tir, y_tir, plateau)
 		hit(x_tir, y_tir, plateau)
 		affiche_plateau(plateau)
@@ -230,9 +235,84 @@ def couler(plateau): #faut faire cette putain de fonction jsp comment faire
 
 def bateaux_aleatoire():
 	#faut faire ca aussi
+	pass
 	
+
 def prof_de_merde():
 	#faut faire une fonction pour afficher les 4 grilles en meme temps pour que les profs verifient ca marche
+	pass
+
+
+def _input(msg, reponse_defaut):
+    """meme fonction que input mais cette fois si s'affiche à l'écran et non sur la console"""
+    texte_ = reponse_defaut
+    while True:
+        ev = donne_ev()
+        t_ev = type_ev(ev)
+        if t_ev == "Quitte":			#ferme la fenetre et quitte le programme si on fait la croix
+        	ferme_fenetre()		
+        	exit()
+        if t_ev == "Touche":
+            x = touche(ev)
+
+            if x == "Return":
+                return texte_
+            elif x == "BackSpace":
+                texte_ = texte_[:-1]
+
+            elif len(x) == 1 and len(texte_) <= 18:
+                texte_ += x
+
+        efface("texte_input")
+        texte(
+            1000 // 2,
+            1000 // 2,
+            texte_,
+            couleur="white",
+            ancrage="center",
+            tag="texte_input",
+        )
+        mise_a_jour()
+
+
+def my_input(msg, type_retour, reponse_defaut=""):
+    """affichage de l'input"""
+    rectangle(
+        1000 // 2 - 180,
+        1000 // 2 - 100,
+        1000 // 2 + 180,
+        1000 // 2 + 100,
+        couleur="gray28",
+        remplissage="gray",
+        epaisseur=5,
+        tag="cadre",
+    )
+
+    while True:
+        texte(
+            1000 // 2,
+            1000 // 2 - 50,
+            msg,
+            couleur="white",
+            ancrage="center",
+            tag="msg",
+        )
+        _var = _input(msg, reponse_defaut)
+        if type_retour == "int":
+            if _var.isdigit():
+                if int(_var) < 50 and int(_var) > 0:
+                    efface("msg")
+                    efface("msg_erreur")
+                    efface("texte_input")
+                    efface("cadre")
+                    return int(_var)
+        else:
+            efface("msg")
+            efface("msg_erreur")
+            efface("texte_input")
+            efface("cadre")
+            return _var
+
 
 if __name__ == "__main__":
 
@@ -250,6 +330,7 @@ if __name__ == "__main__":
 
 
 	cree_fenetre(1500, 1000)
+	my_input("Gros Bisous", "str", "<3")
 	while menu:
 		rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
 		polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
@@ -258,6 +339,7 @@ if __name__ == "__main__":
 		for i in range(len(choix_mode)):
 			texte(640, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
 			texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
+
 		(x, y) = attend_clic_gauche()
 		for i in range(len(choix_mode)):
 			x1, y1 , x2, y2 = coordonnées_clic(*choix_mode[i])
