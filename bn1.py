@@ -2,7 +2,7 @@ from upemtk import *
 from random import randint
 from time import sleep, time
 
-taille_case = 25
+taille_case = 20
 largeur_plateau = 20 
 hauteur_plateau = 20
 
@@ -24,29 +24,25 @@ def placer_bateau(x, y, taille, direction, plateau):
 	else:
 		for i in range(taille):
 			if direction == 0:
-				if 0 <= y - i < hauteur_plateau and 0 <= x < largeur_plateau:
+				if y + 1 >= taille: #+1 car la matrice commence à 0
 					plateau[y-i][x]=1
 				else:
 					return False
 
 			elif direction == 1:
-				if x + taille > largeur_plateau:
-					return False
-				elif (0 <= y < hauteur_plateau) and (0 <= x + i < largeur_plateau):
+				if x + taille <= len(plateau1[0]):
 					plateau[y][x+i]=1
 				else:
 					return False
 
 			elif direction == 2:
-				if y + taille > hauteur_plateau:
-					return False
-				elif (0 <= y + i < hauteur_plateau) and (0 <= x < largeur_plateau):
+				if y + taille <= len(plateau1):
 					plateau[y+i][x]=1
 				else:
 					return False
 
 			elif direction == 3:
-				if 0 <= y < hauteur_plateau and 0 <= x - i < largeur_plateau:
+				if x + 1 >= taille:
 					plateau[y][x-i]=1
 				else:
 					return False
@@ -62,77 +58,92 @@ def demande(taille):
 	direction = my_input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] ", "int")
 	return x, y, taille, direction
 
-def sortie_bateau(taille, plateau):
+def sortie_bateau(taille, plateau, liste_bateau):
 	placement = False
 	while not placement:
 		x, y, taille, direction = demande(taille)
 		if placer_bateau(x, y, taille, direction, plateau) == False:
 			if direction == 0:
-				for i in range(y-taille, y+1):
+				for i in range(y-taille + 1, y+1):
 					plateau[i][x]=0
-			if direction == 1:
+			elif direction == 1:
 				for i in range(x, len(plateau)):
 					plateau[y][i]=0
-			if direction == 2:
+			elif direction == 2:
 				for i in range(y, len(plateau)):
 					plateau[i][x]=0
-			if direction == 3:
-				for i in range(x-taille, x+1):
+			elif direction == 3:
+				for i in range(x-taille + 1, x+1):
 					plateau[y][i]=0
 
 		elif placer_bateau(x, y, taille, direction, plateau) == True: # faut faire en sorte que si il y a deja un bateau 
 			#que le truc redemande des coordoonnees
 			placement = placer_bateau(x, y, taille, direction, plateau)
 
+			bateau = []
+			if direction == 0:
+				for i in range(y-taille + 1, y+1):
+					bateau.append((x, i))
+			elif direction == 1:
+				for i in range(x, len(plateau)):
+					bateau.append((i, y))
+			elif direction == 2:
+				for i in range(y, len(plateau)):
+					bateau.append((x, i))
+			elif direction == 3:
+				for i in range(x-taille + 1, x+1):
+					bateau.append((i, y))
+			liste_bateau[taille - 1].append(bateau)
+
 			
-def dessine_bateau(plateau, x, y, j, j_bis):
+def dessine_bateau(plateau, x, y, j, j_bis, placement_x, placement_y, liste_bateau):
 	texte(x, y, "Grille de bateaux de " + j, couleur='red', ancrage='nw', police='Helvetica', taille=30)
 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de votre bateau de 6 cases [1]")
-	sortie_bateau(6, plateau)
+	sortie_bateau(6, plateau, liste_bateau)
 	efface(texte1)
-	dessine_grille(25, 25, plateau)
+	dessine_grille(placement_x, placement_y, plateau)
 
-	for i in range(2):
-		nb = 2 - i
-		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 5 cases [" + str(nb) + ']')
-		sortie_bateau(5, plateau)
-		efface(texte1)
-		dessine_grille(25, 25, plateau)	
+	# for i in range(2):
+	# 	nb = 2 - i
+	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 5 cases [" + str(nb) + ']')
+	# 	sortie_bateau(5, plateau)
+	# 	efface(texte1)
+	# 	dessine_grille(placement_x, placement_y, plateau)	
+	# efface(texte1)
+
+	# for i in range(3):
+	# 	nb = 3 - i
+	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 4 cases [" + str(nb) + ']')
+	# 	sortie_bateau(4, plateau)
+	# 	efface(texte1)
+	# 	dessine_grille(placement_x, placement_y, plateau)
+	# efface(texte1)
+
+	# for i in range(4):
+	# 	nb = 4 - i
+	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 3 cases [" + str(nb) + ']')
+	# 	sortie_bateau(3, plateau)
+	# 	efface(texte1)
+	# 	dessine_grille(placement_x, placement_y, plateau)		
+	# efface(texte1)
+
+	# for i in range(5):
+	# 	nb = 5 - i
+	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 2 cases [" + str(nb) + ']')
+	# 	sortie_bateau(2, plateau)
+	# 	efface(texte1)
+	# 	dessine_grille(placement_x, placement_y, plateau)
+	# efface(texte1)
+
+	# for i in range(6):
+	# 	nb = 6 - i
+	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 1 case [" + str(nb) + ']')
+	# 	sortie_bateau(1, plateau)
+	# 	efface(texte1)
+	# 	dessine_grille(placement_x, placement_y, plateau)
 	efface(texte1)
 
-	for i in range(3):
-		nb = 3 - i
-		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 4 cases [" + str(nb) + ']')
-		sortie_bateau(4, plateau)
-		efface(texte1)
-		dessine_grille(25, 25, plateau)
-	efface(texte1)
-
-	for i in range(4):
-		nb = 4 - i
-		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 3 cases [" + str(nb) + ']')
-		sortie_bateau(3, plateau)
-		efface(texte1)
-		dessine_grille(25, 25, plateau)		
-	efface(texte1)
-
-	for i in range(5):
-		nb = 5 - i
-		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 2 cases [" + str(nb) + ']')
-		sortie_bateau(2, plateau)
-		efface(texte1)
-		dessine_grille(25, 25, plateau)
-	efface(texte1)
-
-	for i in range(6):
-		nb = 6 - i
-		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 1 case [" + str(nb) + ']')
-		sortie_bateau(1, plateau)
-		efface(texte1)
-		dessine_grille(25, 25, plateau)
-	efface(texte1)
-
-	efface(dessine_grille(25, 25, plateau1)) #efface pas la grille de j1 ni texte fin ca efface rien en fait 
+	efface(dessine_grille(placement_x, placement_y, plateau)) #efface pas la grille de j1 ni texte fin ca efface rien en fait 
 	texte(750, 500, "C'est au tour de " + j_bis + " de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
 
 
@@ -190,9 +201,9 @@ def carre(x, y, c1, c2):
 def dessine_grille(x, y, plateau):
 	for i in range(len(plateau)):
 		for j in range(len(plateau[i])):
-			carre(i, j, "white", "darkblue")
+			carre(i + x, j + y, "white", "darkblue")
 			if plateau[j][i] == 1:
-				carre(i, j, "white", "red")
+				carre(i + x, j + y, "white", "red")
 
 def hit(x, y, plateau):
 	for i in range(len(plateau)):
@@ -265,8 +276,8 @@ def _input(msg, reponse_defaut):
 
         efface("texte_input")
         texte(
-            1000 // 2,
-            1000 // 2,
+            1500 * 2/ 3,
+            1000 // 3,
             texte_,
             couleur="white",
             ancrage="center",
@@ -278,10 +289,10 @@ def _input(msg, reponse_defaut):
 def my_input(msg, type_retour, reponse_defaut=""):
     """affichage de l'input"""
     rectangle(
-        1000 // 2 - 180,
-        1000 // 2 - 100,
-        1000 // 2 + 180,
-        1000 // 2 + 100,
+        1500 * 2/3 - 280,
+        1000 // 3 - 200,
+        1500 * 2/3 + 280,
+        1000 // 3 + 200,
         couleur="gray28",
         remplissage="gray",
         epaisseur=5,
@@ -290,8 +301,8 @@ def my_input(msg, type_retour, reponse_defaut=""):
 
     while True:
         texte(
-            1000 // 2,
-            1000 // 2 - 50,
+            1500 * 2/3,
+            1000 // 3 - 150,
             msg,
             couleur="white",
             ancrage="center",
@@ -300,7 +311,7 @@ def my_input(msg, type_retour, reponse_defaut=""):
         _var = _input(msg, reponse_defaut)
         if type_retour == "int":
             if _var.isdigit():
-                if int(_var) < 50 and int(_var) > 0:
+                if int(_var) < 50:
                     efface("msg")
                     efface("msg_erreur")
                     efface("texte_input")
@@ -323,6 +334,14 @@ if __name__ == "__main__":
 	joueur_1 = False
 	joueur_2 = False
 
+	liste_bateau_joueur1 = [[] for i in range(6)]
+	liste_bateau_joueur2 = [[] for i in range(6)]
+	# liste_bateau = []
+	# for i in range(6):
+	# 	liste_bateau.append([])
+
+
+
 	choix_mode = [("Mode classique ", 640, 200),  
 		("Mode aléatoire", 640, 300),
 		("Mode prof", 640, 400),
@@ -330,7 +349,6 @@ if __name__ == "__main__":
 
 
 	cree_fenetre(1500, 1000)
-	my_input("Gros Bisous", "str", "<3")
 	while menu:
 		rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
 		polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
@@ -352,22 +370,23 @@ if __name__ == "__main__":
 					menu = False
 
 	debut = time()
+	plateau1 = init(20)
+	plateau2 = init(20)
 	while jouer:
 		efface_tout()
-		plateau1 = init(20)
-		dessine_grille(25, 25, plateau1)
-		dessine_bateau(plateau1, 25, 530, 'j1', 'j2')
+		dessine_grille(0, 0, plateau1)
+		dessine_bateau(plateau1, 25, 530, 'j1', 'j2', 0, 0, liste_bateau_joueur1)
 		
 		
-		plateau2 = init(20)
-		dessine_grille(900, 25, plateau2)
-		dessine_bateau(plateau2, 900, 530, 'j2', 'j1')
+		dessine_grille(25, 0, plateau2)
+		dessine_bateau(plateau2, 900, 530, 'j2', 'j1', 25, 0, liste_bateau_joueur2)
+		print(liste_bateau_joueur1)
+		print(liste_bateau_joueur2)
 
 
+		# affiche_plateau(plateau1)
 
-		affiche_plateau(plateau1)
-
-		dessine_grille(25, 25, plateau1)
+		dessine_grille(0, 0, plateau1)
 
 		touch(plateau1)
 
