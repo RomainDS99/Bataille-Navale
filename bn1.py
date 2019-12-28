@@ -67,10 +67,10 @@ def sortie_bateau(taille, plateau, liste_bateau):
 				for i in range(y-taille + 1, y+1):
 					plateau[i][x]=0
 			elif direction == 1:
-				for i in range(x, len(plateau)):
+				for i in range(x, x + taille):
 					plateau[y][i]=0
 			elif direction == 2:
-				for i in range(y, len(plateau)):
+				for i in range(y, y + taille):
 					plateau[i][x]=0
 			elif direction == 3:
 				for i in range(x-taille + 1, x+1):
@@ -85,10 +85,10 @@ def sortie_bateau(taille, plateau, liste_bateau):
 				for i in range(y-taille + 1, y+1):
 					bateau.append((x, i))
 			elif direction == 1:
-				for i in range(x, len(plateau)):
+				for i in range(x, x + taille):
 					bateau.append((i, y))
 			elif direction == 2:
-				for i in range(y, len(plateau)):
+				for i in range(y, y + taille):
 					bateau.append((x, i))
 			elif direction == 3:
 				for i in range(x-taille + 1, x+1):
