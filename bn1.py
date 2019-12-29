@@ -67,10 +67,10 @@ def sortie_bateau(taille, plateau, liste_bateau):
 				for i in range(y-taille + 1, y+1):
 					plateau[i][x]=0
 			elif direction == 1:
-				for i in range(x, x + taille):
+				for i in range(x, len(plateau[0])):
 					plateau[y][i]=0
 			elif direction == 2:
-				for i in range(y, y + taille):
+				for i in range(y, len(plateau)):
 					plateau[i][x]=0
 			elif direction == 3:
 				for i in range(x-taille + 1, x+1):
@@ -103,18 +103,18 @@ def dessine_bateau(plateau, x, y, j, j_bis, placement_x, placement_y, liste_bate
 	efface(texte1)
 	dessine_grille(placement_x, placement_y, plateau)
 
-	# for i in range(2):
-	# 	nb = 2 - i
-	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 5 cases [" + str(nb) + ']')
-	# 	sortie_bateau(5, plateau)
-	# 	efface(texte1)
-	# 	dessine_grille(placement_x, placement_y, plateau)	
-	# efface(texte1)
+	for i in range(2):
+		nb = 2 - i
+		texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 5 cases [" + str(nb) + ']')
+		sortie_bateau(5, plateau, liste_bateau)
+		efface(texte1)
+		dessine_grille(placement_x, placement_y, plateau)	
+	efface(texte1)
 
 	# for i in range(3):
 	# 	nb = 3 - i
 	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 4 cases [" + str(nb) + ']')
-	# 	sortie_bateau(4, plateau)
+	# 	sortie_bateau(4, plateau, liste_bateau)
 	# 	efface(texte1)
 	# 	dessine_grille(placement_x, placement_y, plateau)
 	# efface(texte1)
@@ -122,7 +122,7 @@ def dessine_bateau(plateau, x, y, j, j_bis, placement_x, placement_y, liste_bate
 	# for i in range(4):
 	# 	nb = 4 - i
 	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 3 cases [" + str(nb) + ']')
-	# 	sortie_bateau(3, plateau)
+	# 	sortie_bateau(3, plateau, liste_bateau)
 	# 	efface(texte1)
 	# 	dessine_grille(placement_x, placement_y, plateau)		
 	# efface(texte1)
@@ -130,7 +130,7 @@ def dessine_bateau(plateau, x, y, j, j_bis, placement_x, placement_y, liste_bate
 	# for i in range(5):
 	# 	nb = 5 - i
 	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 2 cases [" + str(nb) + ']')
-	# 	sortie_bateau(2, plateau)
+	# 	sortie_bateau(2, plateau, liste_bateau)
 	# 	efface(texte1)
 	# 	dessine_grille(placement_x, placement_y, plateau)
 	# efface(texte1)
@@ -138,7 +138,7 @@ def dessine_bateau(plateau, x, y, j, j_bis, placement_x, placement_y, liste_bate
 	# for i in range(6):
 	# 	nb = 6 - i
 	# 	texte1 = texte(x, y + 35, "Veuillez rentrez les coordonnées et la direction de vos bateaux de 1 case [" + str(nb) + ']')
-	# 	sortie_bateau(1, plateau)
+	# 	sortie_bateau(1, plateau, liste_bateau)
 	# 	efface(texte1)
 	# 	dessine_grille(placement_x, placement_y, plateau)
 	efface(texte1)
