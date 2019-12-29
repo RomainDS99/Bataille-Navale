@@ -12,42 +12,32 @@ def init(taille):
 		plateau.append([0]*taille)
 	return plateau
 
+
 def affiche_plateau(plateau):
 	for ligne in plateau:
 		print(ligne)
 
+
 def placer_bateau(x, y, taille, direction, plateau):
-	plateau[y][x]=1
-	if taille == 1:
-		if 0 <= x < largeur_plateau and 0 <= y < hauteur_plateau:
-			return True
-	else:
-		for i in range(taille):
-			if direction == 0:
-				if y + 1 >= taille: #+1 car la matrice commence à 0
-					plateau[y-i][x]=1
-				else:
-					return False
+	bateau = []
+	if direction == 0:
+		for i in range(y-taille + 1, y+1):
+			plateau[i][x] = 1
+			bateau.append((x, i))
+	elif direction == 1:
+		for i in range(x, x + taille):
+			plateau[y][i] = 1
+			bateau.append((i, y))
+	elif direction == 2:
+		for i in range(y, y + taille):
+			plateau[i][x] = 1
+			bateau.append((x, i))
+	elif direction == 3:
+		for i in range(x-taille + 1, x+1):
+			plateau[y][i] = 1
+			bateau.append((i, y))
+	return bateau
 
-			elif direction == 1:
-				if x + taille <= len(plateau1[0]):
-					plateau[y][x+i]=1
-				else:
-					return False
-
-			elif direction == 2:
-				if y + taille <= len(plateau1):
-					plateau[y+i][x]=1
-				else:
-					return False
-
-			elif direction == 3:
-				if x + 1 >= taille:
-					plateau[y][x-i]=1
-				else:
-					return False
-
-		return True
 
 def demande(taille):
 	# x = int(input("abscisse de la tete du bateau: "))
@@ -58,42 +48,46 @@ def demande(taille):
 	direction = my_input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] ", "int")
 	return x, y, taille, direction
 
+
 def sortie_bateau(taille, plateau, liste_bateau):
 	placement = False
 	while not placement:
 		x, y, taille, direction = demande(taille)
-		if placer_bateau(x, y, taille, direction, plateau) == False:
-			if direction == 0:
-				for i in range(y-taille + 1, y+1):
-					plateau[i][x]=0
-			elif direction == 1:
-				for i in range(x, len(plateau[0])):
-					plateau[y][i]=0
-			elif direction == 2:
-				for i in range(y, len(plateau)):
-					plateau[i][x]=0
-			elif direction == 3:
-				for i in range(x-taille + 1, x+1):
-					plateau[y][i]=0
-
-		elif placer_bateau(x, y, taille, direction, plateau) == True: # faut faire en sorte que si il y a deja un bateau 
-			#que le truc redemande des coordoonnees
-			placement = placer_bateau(x, y, taille, direction, plateau)
-
-			bateau = []
-			if direction == 0:
-				for i in range(y-taille + 1, y+1):
-					bateau.append((x, i))
-			elif direction == 1:
-				for i in range(x, x + taille):
-					bateau.append((i, y))
-			elif direction == 2:
-				for i in range(y, y + taille):
-					bateau.append((x, i))
-			elif direction == 3:
-				for i in range(x-taille + 1, x+1):
-					bateau.append((i, y))
+		if control_placement(x, y, taille, direction, plateau):
+			bateau = placer_bateau(x, y, taille, direction, plateau)
+			placement = True
 			liste_bateau[taille - 1].append(bateau)
+
+
+def control_placement(x, y, taille, direction, plateau):
+	if direction == 0:
+		if y + 1 >= taille:
+			for i in range(y-taille + 1, y+1):
+				if plateau[i][x] != 0:
+					return False
+			return True 
+		return False
+	if direction == 1:
+		if x + taille <= len(plateau[0]):
+			for i in range(x, x + taille):
+				if plateau[y][i] != 0:
+					return False
+			return True
+		return False
+	if direction == 2:
+		if y + taille <= len(plateau):
+			for i in range(y, y + taille):
+				if plateau[i][x] != 0:
+					return False
+			return True 
+		return False
+	if direction == 3:
+		if x + 1 >= taille:
+			for i in range(x-taille + 1, x+1):
+				if plateau[y][i] != 0:
+					return False
+			return True 
+		return False
 
 			
 def dessine_bateau(plateau, x, y, j, j_bis, placement_x, placement_y, liste_bateau):
@@ -323,6 +317,9 @@ def my_input(msg, type_retour, reponse_defaut=""):
             efface("texte_input")
             efface("cadre")
             return _var
+
+
+
 
 
 if __name__ == "__main__":
