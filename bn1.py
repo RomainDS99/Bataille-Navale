@@ -226,8 +226,12 @@ def gagner(plateau, liste_bateau):
 				
 
 def bateaux_aleatoire():
-	#faut faire ca aussi
-	pass
+	while not control_placement(x, y, taille, direction, plateau):
+		x = randint(0, 19)
+		y = randint(0, 19)
+		direction = randint(0, 3)
+		taille = randint(0, 6)
+	bateau = placer_bateau(x, y, taille, direction, plateau)
 	
 
 def prof_de_merde():
