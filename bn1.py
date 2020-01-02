@@ -339,21 +339,23 @@ if __name__ == "__main__":
 					menu = False
 				else:
 					menu = False
+	efface_tout()
 
 	debut = time()
 	plateau1 = init(20)
 	plateau2 = init(20)
 
-	efface_tout()
+
 	dessine_grille(0, 0, plateau1)
+	dessine_grille(25, 0, plateau2)
+
 	dessine_bateau(plateau1, 25, 530, 'j1', 0, 0, liste_bateau_joueur1, navires[:1])
 	texte(750, 500, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
 
-	
-	dessine_grille(25, 0, plateau2)
 	dessine_bateau(plateau2, 900, 530, 'j2', 25, 0, liste_bateau_joueur2, navires[:1])
 	print(liste_bateau_joueur1)
 	print(liste_bateau_joueur2)
+
 
 
 	while jouer:
@@ -371,6 +373,7 @@ if __name__ == "__main__":
 			print("j1")
 			tour_j1 = touch(plateau2, liste_bateau_joueur2)
 			dessine_grille(0, 25, plateau2, True)
+			dessine_grille(25, 0, plateau2)
 
 		#joueur 2
 		tour_j2 = True
@@ -378,6 +381,7 @@ if __name__ == "__main__":
 			print("j2")
 			tour_j2 = touch(plateau1, liste_bateau_joueur1)
 			dessine_grille(25, 25, plateau1, True)
+			dessine_grille(0, 0, plateau1)
 
 
 		
