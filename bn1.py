@@ -112,35 +112,35 @@ def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans l
 		print("Touché !")
 		return True
 #en vue 
-	elif plateau[y - 1][x] == 1:
+	elif plateau[y - 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
-	elif plateau[y - 1][x - 1] == 1:
+	elif plateau[y - 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
-	elif plateau[y - 1][x + 1] == 1:
+	elif plateau[y - 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
-	elif plateau[y + 1][x] == 1:
+	elif plateau[y + 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
-	elif plateau[y + 1][x + 1] == 1:
+	elif plateau[y + 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
-	elif plateau[y + 1][x - 1] == 1:
+	elif plateau[y + 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
-	elif plateau[y][x + 1] == 1:
+	elif plateau[y][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
-	elif plateau[y][x - 1] == 1:
+	elif plateau[y][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 
@@ -304,6 +304,12 @@ def my_input(msg, type_retour, reponse_defaut=""):
             return _var
 
 
+def affichage(x, plateau, x2, plateau2, prof):
+	dessine_grille(x, 25, plateau2, True)
+	dessine_grille(x, 0, plateau)
+	if prof:
+		dessine_grille(x2, 25, plateau, True)
+		dessine_grille(x2, 0, plateau2)
 
 
 
@@ -315,6 +321,7 @@ if __name__ == "__main__":
 	jouer = False
 	joueur_1 = False
 	joueur_2 = False
+	mode_prof = False
 
 	choix_mode = [("Mode classique", 640, 200),  
 		("Mode aléatoire", 640, 300),
@@ -336,26 +343,35 @@ if __name__ == "__main__":
 
 	cree_fenetre(1500, 1000)
 
-	rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
-	polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
-	ligne(200, 150, 200, 240, epaisseur=3)
-	polygone((75, 240, 325, 240, 300, 270, 100, 270, 75, 240), epaisseur=3)
-	for i in range(len(choix_mode)):
-		texte(640, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
-		texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
-
 	while menu:
+		rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
+		polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
+		ligne(200, 150, 200, 240, epaisseur=3)
+		polygone((75, 240, 325, 240, 300, 270, 100, 270, 75, 240), epaisseur=3)
+
+		for i in range(len(choix_mode)):
+			texte(640, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
+			if choix_mode[i][0] != "Mode prof":
+				texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
+			elif not mode_prof:
+				texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='#ff0000', police='Helvetica', taille=30)
+			else:
+				texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='#00ff00', police='Helvetica', taille=30)
+
 		(x, y) = attend_clic_gauche()
 		for i in range(len(choix_mode)):
 			x1, y1 , x2, y2 = coordonnées_clic(*choix_mode[i])
 			if x1 < x < x2 and y1 < y < y2:
 				mode = choix_mode[i][0]
-				if mode != "Quitter":
+				if mode == "Mode prof":
+					mode_prof = not mode_prof
+
+				elif mode != "Quitter":
 					jouer = True 
 					menu = False
 				else:
-					menu = False
-	efface_tout()
+					exit()
+		efface_tout()
 
 	debut = time()
 	plateau1 = init(20)
@@ -363,12 +379,16 @@ if __name__ == "__main__":
 
 
 	dessine_grille(0, 0, plateau1)
-	dessine_grille(25, 0, plateau2)
 
 	dessine_bateau(plateau1, 25, 530, 'j1', 0, 0, liste_bateau_joueur1, navires[:1])
+	attend_clic_gauche()
+	efface_tout()
+
 	texte(750, 500, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
 
+	dessine_grille(25, 0, plateau2)
 	dessine_bateau(plateau2, 900, 530, 'j2', 25, 0, liste_bateau_joueur2, navires[:1])
+	attend_clic_gauche()
 	print(liste_bateau_joueur1)
 	print(liste_bateau_joueur2)
 
@@ -379,18 +399,21 @@ if __name__ == "__main__":
 		efface_tout()
 		# affiche_plateau(plateau1)
 
-		dessine_grille(0, 0, plateau1)
-		dessine_grille(25, 0, plateau2)
-		dessine_grille(0, 25, plateau2, True)
-		dessine_grille(25, 25, plateau1, True)
+		# dessine_grille(0, 0, plateau1)
+		# dessine_grille(25, 0, plateau2)
+		# dessine_grille(0, 25, plateau2, True)
+		# dessine_grille(25, 25, plateau1, True)
 
 		#joueur 1
 		tour_j1 = True
 		while tour_j1 and not a_gagner:
+			efface_tout()
 			print("j1")
+
+			affichage(0, plateau1, 25, plateau2, mode_prof)
 			tour_j1 = touch(plateau2, liste_bateau_joueur2)
-			dessine_grille(0, 25, plateau2, True)
-			dessine_grille(25, 0, plateau2)
+			affichage(0, plateau1, 25, plateau2, mode_prof)
+			attend_clic_gauche()
 
 			a_gagner = gagner(plateau2, liste_bateau_joueur2)
 			if a_gagner:
@@ -399,10 +422,12 @@ if __name__ == "__main__":
 		#joueur 2
 		tour_j2 = True
 		while tour_j2 and not a_gagner:
+			efface_tout()
 			print("j2")
+			affichage(25, plateau2, 0, plateau1, mode_prof)
 			tour_j2 = touch(plateau1, liste_bateau_joueur1)
-			dessine_grille(25, 25, plateau1, True)
-			dessine_grille(0, 0, plateau1)
+			affichage(25, plateau2, 0, plateau1, mode_prof)
+			attend_clic_gauche()
 
 			a_gagner = gagner(plateau1, liste_bateau_joueur1)
 			if a_gagner:
