@@ -150,17 +150,18 @@ def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans l
 	else:
 		plateau[y][x] = 3
 		print("Dommage !")
+	return False
 
 
 def carre(x, y, c1, c2):
 	rectangle(x*taille_case+taille_case, y*taille_case+taille_case, x*taille_case+2*taille_case, y*taille_case+2*taille_case, c1, c2)
 
 
-def dessine_grille(x, y, plateau):
+def dessine_grille(x, y, plateau, tir=False):
 	for i in range(len(plateau)):
 		for j in range(len(plateau[i])):
 			carre(i + x, j + y, "white", "darkblue")
-			if plateau[j][i] == 1:
+			if plateau[j][i] == 1 and not tir:
 				carre(i + x, j + y, "white", "red")
 			elif plateau[j][i] == 2:
 				carre(i + x, j + y, "white", "cyan")
@@ -172,17 +173,15 @@ def dessine_grille(x, y, plateau):
 				carre(i + x, j + y, "white", "#ff0080")
 
 
-def touch(plateau, x, y, liste_bateau):
-	toucher = True
-	while toucher:
-		# x_tir = int(input("abscisse du tir: "))
-		x_tir = my_input("abscisse du tir: ", "int")
-		# y_tir = int(input("ordonnée du tir: "))
-		y_tir = my_input("ordonnée du tir: ", "int")
-		toucher = tir(x_tir, y_tir, plateau)
-		couler(plateau, liste_bateau)
-		# dessine_grille(x, y, plateau)
-		# affiche_plateau(plateau)
+def touch(plateau, liste_bateau):
+	# x_tir = int(input("abscisse du tir: "))
+	x_tir = my_input("abscisse du tir: ", "int")
+	# y_tir = int(input("ordonnée du tir: "))
+	y_tir = my_input("ordonnée du tir: ", "int")
+	toucher = tir(x_tir, y_tir, plateau)
+	couler(plateau, liste_bateau)
+	# affiche_plateau(plateau)
+	return toucher
 
 
 def coordonnées_clic(texte, x, y):
@@ -199,13 +198,14 @@ def coordonnées_clic(texte, x, y):
 def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comment faire 
 	for taille_bateau in liste_bateau:
 		for elem in taille_bateau:
-
-			if plateau[elem[1]][elem[0]] not in {2, 5}:		#touché
+			if plateau[elem[1]][elem[0]] != 2:		#touché
 				break
 		else:
-			for elem in taille_bateau:
-				plateau[elem[1]][elem[0]] = 5
-			
+			if taille_bateau:
+				print("Coulé !")
+				for elem in taille_bateau:
+					plateau[elem[1]][elem[0]] = 5
+				
 
 def bateaux_aleatoire():
 	#faut faire ca aussi
@@ -362,14 +362,23 @@ if __name__ == "__main__":
 
 		dessine_grille(0, 0, plateau1)
 		dessine_grille(25, 0, plateau2)
-		dessine_grille(0, 25, plateau1)
-		dessine_grille(25, 25, plateau2)
+		dessine_grille(0, 25, plateau2, True)
+		dessine_grille(25, 25, plateau1, True)
 
 		#joueur 1
-		touch(plateau2, 25, 25, liste_bateau_joueur2)
+		tour_j1 = True
+		while tour_j1:
+			print("j1")
+			tour_j1 = touch(plateau2, liste_bateau_joueur2)
+			dessine_grille(0, 25, plateau2, True)
 
 		#joueur 2
-		touch(plateau1, 0, 25, liste_bateau_joueur1)
+		tour_j2 = True
+		while tour_j2:
+			print("j2")
+			tour_j2 = touch(plateau1, liste_bateau_joueur1)
+			dessine_grille(25, 25, plateau1, True)
+
 
 		
 
