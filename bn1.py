@@ -105,8 +105,6 @@ def dessine_bateau(plateau, x, y, j, placement_x, placement_y, liste_bateau, nav
 		efface(texte1)
 
 	
-
-
 def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans la fenetre 
 #touché
 	if plateau[y][x] == 1:
@@ -158,6 +156,7 @@ def carre(x, y, c1, c2):
 
 
 def dessine_grille(x, y, plateau, tir=False):
+	dessine_lettre(x, y)
 	for i in range(len(plateau)):
 		for j in range(len(plateau[i])):
 			carre(i + x, j + y, "white", "darkblue")
@@ -173,11 +172,22 @@ def dessine_grille(x, y, plateau, tir=False):
 				carre(i + x, j + y, "white", "#ff0080")
 
 
+def dessine_lettre(x, y):
+	for i in range(largeur_plateau):
+		largeur, hauteur = taille_texte(texte)
+		texte((x + 1) * taille_case + i * taille_case + taille_case // 2, y * taille_case + taille_case // 2, i, ancrage="center", police="Impact", taille=12)
+		texte(x * taille_case + taille_case // 2, (y + 1) * taille_case + i * taille_case + taille_case // 2, i, ancrage="center", police="Impact", taille=12)
+
+
 def touch(plateau, liste_bateau):
-	# x_tir = int(input("abscisse du tir: "))
-	x_tir = my_input("abscisse du tir: ", "int")
-	# y_tir = int(input("ordonnée du tir: "))
-	y_tir = my_input("ordonnée du tir: ", "int")
+	while True:
+		# x_tir = int(input("abscisse du tir: "))
+		x_tir = my_input("abscisse du tir: ", "int")
+		# y_tir = int(input("ordonnée du tir: "))
+		y_tir = my_input("ordonnée du tir: ", "int")
+		if plateau[y_tir][x_tir] in {0, 1}:
+			break
+
 	toucher = tir(x_tir, y_tir, plateau)
 	couler(plateau, liste_bateau)
 	# affiche_plateau(plateau)
@@ -205,6 +215,14 @@ def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comm
 				print("Coulé !")
 				for elem in taille_bateau:
 					plateau[elem[1]][elem[0]] = 5
+
+
+def gagner(plateau, liste_bateau):
+	for taille_bateau in liste_bateau:
+		for elem in taille_bateau:
+			if plateau[elem[1]][elem[0]] != 5:
+				return False
+	return True
 				
 
 def bateaux_aleatoire():
@@ -274,15 +292,13 @@ def my_input(msg, type_retour, reponse_defaut=""):
         _var = _input(msg, reponse_defaut)
         if type_retour == "int":
             if _var.isdigit():
-                if int(_var) < 50:
+                if int(_var) < 20:
                     efface("msg")
-                    efface("msg_erreur")
                     efface("texte_input")
                     efface("cadre")
                     return int(_var)
         else:
             efface("msg")
-            efface("msg_erreur")
             efface("texte_input")
             efface("cadre")
             return _var
@@ -300,6 +316,11 @@ if __name__ == "__main__":
 	joueur_1 = False
 	joueur_2 = False
 
+	choix_mode = [("Mode classique", 640, 200),  
+		("Mode aléatoire", 640, 300),
+		("Mode prof", 640, 400),
+		("Quitter", 640, 500)]
+
 	liste_bateau_joueur1 = [[] for i in range(6)]
 	liste_bateau_joueur2 = [[] for i in range(6)]
 	# liste_bateau = []
@@ -311,11 +332,6 @@ if __name__ == "__main__":
 		navires.append([])
 		for y in range(7-x):
 			navires[-1].append(x)
-
-	choix_mode = [("Mode classique", 640, 200),  
-		("Mode aléatoire", 640, 300),
-		("Mode prof", 640, 400),
-		("Quitter", 640, 500)]
 
 
 	cree_fenetre(1500, 1000)
@@ -357,8 +373,9 @@ if __name__ == "__main__":
 	print(liste_bateau_joueur2)
 
 
-
-	while jouer:
+	a_gagner = False
+	gagnant = None
+	while jouer and not a_gagner:
 		efface_tout()
 		# affiche_plateau(plateau1)
 
@@ -369,19 +386,32 @@ if __name__ == "__main__":
 
 		#joueur 1
 		tour_j1 = True
-		while tour_j1:
+		while tour_j1 and not a_gagner:
 			print("j1")
 			tour_j1 = touch(plateau2, liste_bateau_joueur2)
 			dessine_grille(0, 25, plateau2, True)
 			dessine_grille(25, 0, plateau2)
 
+			a_gagner = gagner(plateau2, liste_bateau_joueur2)
+			if a_gagner:
+				gagnant = "Joueur 1"
+
 		#joueur 2
 		tour_j2 = True
-		while tour_j2:
+		while tour_j2 and not a_gagner:
 			print("j2")
 			tour_j2 = touch(plateau1, liste_bateau_joueur1)
 			dessine_grille(25, 25, plateau1, True)
 			dessine_grille(0, 0, plateau1)
+
+			a_gagner = gagner(plateau1, liste_bateau_joueur1)
+			if a_gagner:
+				gagnant = "Joueur 2"
+
+
+
+	efface_tout()
+	texte(1500 // 2, 1000 // 2, "Gagnant: {}".format(gagnant), ancrage = "center", couleur='red', police='Helvetica', taille=50)
 
 
 		
