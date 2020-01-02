@@ -110,44 +110,74 @@ def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans l
 	if plateau[y][x] == 1:
 		plateau[y][x] = 2
 		print("Touché !")
+		txt = texte(50, 50, "Touché !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 		return True
 #en vue 
 	elif plateau[y - 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 	elif plateau[y - 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 	elif plateau[y - 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 	elif plateau[y + 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 	elif plateau[y + 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 	elif plateau[y + 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 	elif plateau[y][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 	elif plateau[y][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
+		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 
 #rien
 	else:
 		plateau[y][x] = 3
 		print("Dommage !")
+		txt = texte(50, 50, "Dommage !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		attente(1)
+		efface(txt)
 	return False
 
 
@@ -213,6 +243,9 @@ def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comm
 		else:
 			if taille_bateau:
 				print("Coulé !")
+				txt = texte(50, 50, "Coulé !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+				attente(1)
+				efface(txt)
 				for elem in taille_bateau:
 					plateau[elem[1]][elem[0]] = 5
 
@@ -273,11 +306,11 @@ def _input(msg, reponse_defaut):
 
 def my_input(msg, type_retour, reponse_defaut=""):
     """affichage de l'input"""
-    rectangle(
-        1500 * 4 / 5 - 250,
-        1000 // 4 - 200 - 25,
-        1500 * 4 / 5 + 250,
-        1000 // 4 + 200  - 25,
+    rectangle(950, 25, 1260, 300,
+        #1500 * 4 / 5 - 250,
+        #1000 // 4 - 200 - 25,
+        #1500 * 4 / 5 + 250,
+        #1000 // 4 + 200  - 25,
         couleur="gray28",
         remplissage="gray",
         epaisseur=5,
@@ -285,12 +318,13 @@ def my_input(msg, type_retour, reponse_defaut=""):
     )
 
     while True:
-        texte(
-            1500 * 4 / 5,
-            1000 // 4 - 100 - 25,
+        texte(1110, 100,
+            #1500 * 4 / 5,
+            #1000 // 4 - 100 - 25,
             msg,
             couleur="white",
             ancrage="center",
+	    taille=20,
             tag="msg",
         )
         _var = _input(msg, reponse_defaut)
@@ -309,8 +343,8 @@ def my_input(msg, type_retour, reponse_defaut=""):
 
 
 def affichage(x, plateau, x2, plateau2, prof):
-	dessine_grille(x, 25, plateau2, True)
-	dessine_grille(x, 0, plateau)
+	dessine_grille(x, 0, plateau2, True)
+	dessine_grille(x + 25, 0, plateau)
 	if prof:
 		dessine_grille(x2, 25, plateau, True)
 		dessine_grille(x2, 0, plateau2)
@@ -384,14 +418,16 @@ if __name__ == "__main__":
 
 	dessine_grille(0, 0, plateau1)
 
-	dessine_bateau(plateau1, 25, 530, 'j1', 0, 0, liste_bateau_joueur1, navires[:1])
+	dessine_bateau(plateau1, 25, 430, 'j1', 0, 0, liste_bateau_joueur1, navires[:1])
 	attend_clic_gauche()
 	efface_tout()
 
-	texte(750, 500, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
-
+	txt = texte(650, 400, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+	attente(3)
+	efface(txt)
+	
 	dessine_grille(25, 0, plateau2)
-	dessine_bateau(plateau2, 900, 530, 'j2', 25, 0, liste_bateau_joueur2, navires[:1])
+	dessine_bateau(plateau2, 520, 430, 'j2', 25, 0, liste_bateau_joueur2, navires[:1])
 	attend_clic_gauche()
 	print(liste_bateau_joueur1)
 	print(liste_bateau_joueur2)
@@ -415,6 +451,8 @@ if __name__ == "__main__":
 			print("j1")
 
 			affichage(0, plateau1, 25, plateau2, mode_prof)
+			texte(25, 450, "Grille de tirs de J1")
+			texte(520, 450, "Grille de bateaux de J1")
 			tour_j1 = touch(plateau2, liste_bateau_joueur2)
 			affichage(0, plateau1, 25, plateau2, mode_prof)
 			attend_clic_gauche()
@@ -429,6 +467,8 @@ if __name__ == "__main__":
 			efface_tout()
 			print("j2")
 			affichage(25, plateau2, 0, plateau1, mode_prof)
+			texte(25, 450, "Grille de tirs de J2")
+			texte(520, 450, "Grille de bateaux de J2")
 			tour_j2 = touch(plateau1, liste_bateau_joueur1)
 			affichage(25, plateau2, 0, plateau1, mode_prof)
 			attend_clic_gauche()
