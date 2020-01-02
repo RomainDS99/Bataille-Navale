@@ -390,8 +390,3 @@ if __name__ == "__main__":
 	attend_fermeture()
 
 
-
-# dessine_grille()
-# dessine_tir()
-# separer les test + changement d'etat de l'affichage
-
