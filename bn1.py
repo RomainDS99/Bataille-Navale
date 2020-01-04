@@ -358,11 +358,6 @@ def bateaux_aleatoire():
 		direction = randint(0, 3)
 		taille = randint(0, 6)
 	bateau = placer_bateau(x, y, taille, direction, plateau)
-	
-
-def prof_de_merde():
-	#faut faire une fonction pour afficher les 4 grilles en meme temps pour que les profs verifient ca marche
-	pass
 
 
 def _input(msg, reponse_defaut):
@@ -387,8 +382,8 @@ def _input(msg, reponse_defaut):
 
         efface("texte_input")
         texte(
-            1500 * 4 / 5,
-            1000 // 4 - 25,
+            1300 * 4 / 5 + 120,
+            700 //4,
             texte_,
             couleur="white",
             ancrage="center",
@@ -399,7 +394,7 @@ def _input(msg, reponse_defaut):
 
 def my_input(msg, type_retour, reponse_defaut=""):
     """affichage de l'input"""
-    rectangle(950, 25, 1260, 300,
+    rectangle(1300 * 4 / 5 - 90, 700 // 4 - 150, 1300 * 4 / 5 + 215, 700 // 4 + 100,
         #1500 * 4 / 5 - 250,
         #1000 // 4 - 200 - 25,
         #1500 * 4 / 5 + 250,
@@ -411,7 +406,7 @@ def my_input(msg, type_retour, reponse_defaut=""):
     )
 
     while True:
-        texte(1110, 100,
+        texte(1300 * 4 / 5 + 60, 700 // 4 - 90,
             #1500 * 4 / 5,
             #1000 // 4 - 100 - 25,
             msg,
@@ -435,21 +430,20 @@ def my_input(msg, type_retour, reponse_defaut=""):
             return _var
 
 
-def affichage(x, plateau, x2, plateau2, prof):
+def affichage(x, plateau, x2, plateau_2, prof):
 	"""
 	fonction qui affiche les grilles de bateaux et de tirs, des deux joueurs si mode prof activé
 	:param x: int
 	:param plateau: lst
 	:param x2: int
-	:param plateau2: lst
+	:param plateau_2: lst
 	param prof: bool
 
 	"""
-	dessine_grille(x, 0, plateau2, True)
-	dessine_grille(x + 25, 0, plateau)
+	dessine_grille(x, 0, plateau_2, True)
+	dessine_grille(x + 21, 0, plateau)
 	if prof:
-		dessine_grille(x2, 25, plateau, True)
-		dessine_grille(x2, 0, plateau2)
+		dessine_grille(x2, 14, plateau_2)
 
 
 
@@ -463,10 +457,10 @@ if __name__ == "__main__":
 	joueur_2 = False
 	mode_prof = False
 
-	choix_mode = [("Mode classique", 640, 200),  
-		("Mode aléatoire", 640, 300),
-		("Mode prof", 640, 400),
-		("Quitter", 640, 500)]
+	choix_mode = [("Mode classique", 1300/2, 700*1/3), 
+		("Mode aléatoire", 1300/2, 700/2),
+		("Mode prof", 1300/2, 700*2/3), 
+		("Quitter", 1300/2, 700-25)] 
 
 	liste_bateau_joueur1 = [[] for i in range(6)]
 	liste_bateau_joueur2 = [[] for i in range(6)]
@@ -481,7 +475,7 @@ if __name__ == "__main__":
 			navires[-1].append(x)
 
 
-	cree_fenetre(1500, 1000)
+	cree_fenetre(1300, 700)
 
 	while menu:
 		rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
@@ -524,7 +518,7 @@ if __name__ == "__main__":
 	attend_clic_gauche()
 	efface_tout()
 
-	txt = texte(650, 400, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+	txt = texte(1300/2, 700/2, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
 	attente(3)
 	efface(txt)
 	
@@ -552,11 +546,11 @@ if __name__ == "__main__":
 			efface_tout()
 			print("j1")
 
-			affichage(0, plateau1, 25, plateau2, mode_prof)
-			texte(25, 450, "Grille de tirs de J1")
-			texte(520, 450, "Grille de bateaux de J1")
+			affichage(0, plateau1, 42, plateau2, mode_prof)
+			texte(25, 425, "Grille de tirs de J1")
+			texte(440, 425, "Grille de bateaux de J1")
 			tour_j1 = touch(plateau2, liste_bateau_joueur2)
-			affichage(0, plateau1, 25, plateau2, mode_prof)
+			affichage(0, plateau1, 42, plateau2, mode_prof)
 			attend_clic_gauche()
 
 			a_gagner = gagner(plateau2, liste_bateau_joueur2)
@@ -568,11 +562,11 @@ if __name__ == "__main__":
 		while tour_j2 and not a_gagner:
 			efface_tout()
 			print("j2")
-			affichage(25, plateau2, 0, plateau1, mode_prof)
-			texte(25, 450, "Grille de tirs de J2")
-			texte(520, 450, "Grille de bateaux de J2")
+			affichage(0, plateau2, 42, plateau1, mode_prof)
+			texte(25, 425, "Grille de tirs de J2")
+			texte(440, 425, "Grille de bateaux de J2")
 			tour_j2 = touch(plateau1, liste_bateau_joueur1)
-			affichage(25, plateau2, 0, plateau1, mode_prof)
+			affichage(0, plateau2, 42, plateau1, mode_prof)
 			attend_clic_gauche()
 
 			a_gagner = gagner(plateau1, liste_bateau_joueur1)
@@ -582,7 +576,7 @@ if __name__ == "__main__":
 
 
 	efface_tout()
-	texte(1500 // 2, 1000 // 2, "Gagnant: {}".format(gagnant), ancrage = "center", couleur='red', police='Helvetica', taille=50)
+	texte(1300 // 2, 700 // 2, "Gagnant: {}".format(gagnant), ancrage = "center", couleur='red', police='Helvetica', taille=50)
 
 
 		
