@@ -21,6 +21,15 @@ def affiche_plateau(plateau):
 
 
 def placer_bateau(x, y, taille, direction, plateau):
+	"""
+	fonction qui verifie que le bateau a assez de place pour etre mis au coordonnées demandées 
+	:param x: int 0 <= x <= 19
+	:param y: int 0 <= y <= 19
+	:param taille: int 1 <= taille <= 6
+	:param direction: int 0 <= direction <= 3
+	:param plateau: lst
+
+	"""
 	bateau = []
 	if direction == 0:
 		for i in range(y-taille + 1, y+1):
@@ -42,6 +51,11 @@ def placer_bateau(x, y, taille, direction, plateau):
 
 
 def demande(taille):
+	""" 
+	fonction qui demande les coordonnées de l'emplacement souhaité du bateau 
+	:param taille: int 1 <= taille <= 6
+
+	"""
 	# x = int(input("abscisse de la tete du bateau: "))
 	x = my_input("abscisse de la tete du bateau: ", "int")
 	# y = int(input("ordonnée de la tete du bateau: "))
@@ -52,6 +66,13 @@ def demande(taille):
 
 
 def sortie_bateau(taille, plateau, liste_bateau):
+	""" 
+	fonction qui verifie si le bateau peut etre placé et redemande des coordonnées si non
+	:param taille: int 1 <= taille <= 6
+	:param plateau: lst
+	:param liste_bateau: lst
+
+	"""
 	placement = False
 	while not placement:
 		x, y, taille, direction = demande(taille)
@@ -63,6 +84,15 @@ def sortie_bateau(taille, plateau, liste_bateau):
 
 
 def control_placement(x, y, taille, direction, plateau):
+	"""
+	fonction qui controle qu'il n'y ait pas déjà de bateau placé aux coordonnées souhaitées
+	:param x: int 0 <= x <= 19
+	:param y: int 0 <= y <= 19
+	:param taille: int 1 <= taille <= 6
+	:param direction: int 0 <= direction <= 3
+	:param plateau: lst
+
+	"""
 	if direction == 0:
 		if y + 1 >= taille:
 			for i in range(y-taille + 1, y+1):
@@ -94,6 +124,18 @@ def control_placement(x, y, taille, direction, plateau):
 
 			
 def dessine_bateau(plateau, x, y, j, placement_x, placement_y, liste_bateau, navires):
+	"""
+	fonction qui dessine les bateaux si les caracteristiques sont respectées, cad qu
+	:param plateau: lst
+	:param x: int
+	:param y: int
+	param j: str
+	param placement_x: int
+	:param placement_y: int
+	:param liste_bateau: lst
+	:param navires: lst
+
+	"""
 	texte(x, y, "Grille de bateaux de " + j, couleur='red', ancrage='nw', police='Helvetica', taille=30)
 	for elem in navires:
 		for i, taille in enumerate(elem):
@@ -106,6 +148,13 @@ def dessine_bateau(plateau, x, y, j, placement_x, placement_y, liste_bateau, nav
 
 	
 def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans la fenetre 
+	"""
+	fonction qui détermine ou le tir a été lancé, sur un bateau ou dans l'eau,
+	:param x: int 0 <= x <= 19
+	:param y: int 0 <= y <= 19
+	:param plateau: lst
+
+	"""
 #touché
 	if plateau[y][x] == 1:
 		plateau[y][x] = 2
@@ -182,10 +231,25 @@ def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans l
 
 
 def carre(x, y, c1, c2):
+	"""
+	fonction qui dessine un rectangle
+	:param x: int
+	:param y: int
+	:param c1: str couleur contour
+	:param c2: str couleur remplissage 
+
+	"""
 	rectangle(x*taille_case+taille_case, y*taille_case+taille_case, x*taille_case+2*taille_case, y*taille_case+2*taille_case, c1, c2)
 
 
 def dessine_grille(x, y, plateau, tir=False):
+	"""
+	focntion qui dessine la grille qui prend en commpte l'état des bateaux et les tirs effectués
+	:param x: int
+	:param y: int
+	:param plateau: lst
+
+	"""
 	dessine_lettre(x, y)
 	for i in range(len(plateau)):
 		for j in range(len(plateau[i])):
@@ -203,6 +267,12 @@ def dessine_grille(x, y, plateau, tir=False):
 
 
 def dessine_lettre(x, y):
+	"""
+	fonction qui dessine les chiffres allant de 0 à 19
+	:param x: int
+	:param y: int
+
+	"""
 	for i in range(largeur_plateau):
 		largeur, hauteur = taille_texte(texte)
 		texte((x + 1) * taille_case + i * taille_case + taille_case // 2, y * taille_case + taille_case // 2, i, ancrage="center", police="Impact", taille=12)
@@ -210,6 +280,12 @@ def dessine_lettre(x, y):
 
 
 def touch(plateau, liste_bateau):
+	"""
+	fonction qui redemande des coordonnées au joueur si un tir a touché un bateau
+	:param plateau: lst
+	:param liste_bateau: lst
+
+	"""
 	while True:
 		# x_tir = int(input("abscisse du tir: "))
 		x_tir = my_input("abscisse du tir: ", "int")
@@ -236,6 +312,12 @@ def coordonnées_clic(texte, x, y):
 
 
 def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comment faire 
+	"""
+	fonction qui détermine si un bateau est coulé
+	:param plateau: lst
+	:param liste_bateau: lst
+
+	""" 
 	for taille_bateau in liste_bateau:
 		for elem in taille_bateau:
 			if plateau[elem[1]][elem[0]] != 2:		#touché
@@ -251,6 +333,12 @@ def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comm
 
 
 def gagner(plateau, liste_bateau):
+	"""
+	fonction qui détermine si tous les bateaux sont coulés, donc si un joueur a gagné
+	:param plateau: lst
+	:param liste_bateau: lst
+	
+	"""
 	for taille_bateau in liste_bateau:
 		for elem in taille_bateau:
 			if plateau[elem[1]][elem[0]] != 5:
@@ -259,6 +347,11 @@ def gagner(plateau, liste_bateau):
 				
 
 def bateaux_aleatoire():
+	"""
+	fonction qui permet de placer les bateaux de facon aléatoire
+	:param plateau: lst
+
+	"""
 	while not control_placement(x, y, taille, direction, plateau):
 		x = randint(0, 19)
 		y = randint(0, 19)
@@ -343,6 +436,15 @@ def my_input(msg, type_retour, reponse_defaut=""):
 
 
 def affichage(x, plateau, x2, plateau2, prof):
+	"""
+	fonction qui affiche les grilles de bateaux et de tirs, des deux joueurs si mode prof activé
+	:param x: int
+	:param plateau: lst
+	:param x2: int
+	:param plateau2: lst
+	param prof: bool
+
+	"""
 	dessine_grille(x, 0, plateau2, True)
 	dessine_grille(x + 25, 0, plateau)
 	if prof:
