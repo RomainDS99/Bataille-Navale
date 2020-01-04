@@ -98,11 +98,11 @@ def control_placement(x, y, taille, direction, plateau):
 			for i in range(y-taille + 1, y+1):
 				for direction_x, direction_y in deplacement:
 					if 0 <= x + direction_x < 20 and 0 <= i + direction_y < 20:
-						x += direction_x
-						y = i + direction_y
+						x_ = x +  direction_x
+						y_ = i + direction_y
 					else:
 						continue
-					if plateau[y][x] != 0:
+					if plateau[y_][x_] != 0:
 						return False
 			return True 
 		return False
@@ -111,11 +111,11 @@ def control_placement(x, y, taille, direction, plateau):
 			for i in range(x, x + taille):
 				for direction_x, direction_y in deplacement:
 					if 0 <= i + direction_x < 20 and 0 <= y + direction_y < 20:
-						x = i + direction_x
-						y += direction_y
+						x_ = i + direction_x
+						y_ = y + direction_y
 					else:
 						continue
-					if plateau[y][x] != 0:
+					if plateau[y_][x_] != 0:
 						return False
 			return True
 		return False
@@ -124,11 +124,11 @@ def control_placement(x, y, taille, direction, plateau):
 			for i in range(y, y + taille):
 				for direction_x, direction_y in deplacement:
 					if 0 <= x + direction_x < 20 and 0 <= i + direction_y < 20:
-						x += direction_x
-						y = i + direction_y
+						x_ = x + direction_x
+						y_ = i + direction_y
 					else:
 						continue
-					if plateau[y][x] != 0:
+					if plateau[y_][x_] != 0:
 						return False
 			return True 
 		return False
@@ -137,11 +137,11 @@ def control_placement(x, y, taille, direction, plateau):
 			for i in range(x-taille + 1, x+1):
 				for direction_x, direction_y in deplacement:
 					if 0 <= i + direction_x < 20 and 0 <= y + direction_y < 20:
-						x = i + direction_x
-						y += direction_y
+						x_ = i + direction_x
+						y_ = y + direction_y
 					else:
 						continue
-					if plateau[y][x] != 0:
+					if plateau[y_][x_] != 0:
 						return False
 			return True 
 		return False
@@ -188,56 +188,56 @@ def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans l
 		efface(txt)
 		return True
 #en vue 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y - 1][x] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y - 1 < 20 and plateau[y - 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y - 1][x - 1] in {1, 2}:
+	elif 0 <= x - 1 < 20 and 0 <= y - 1 < 20 and plateau[y - 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y - 1][x + 1] in {1, 2}:
+	elif 0 <= x + 1 < 20 and 0 <= y - 1 < 20 and plateau[y - 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y + 1][x] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y + 1 < 20 and plateau[y + 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y + 1][x + 1] in {1, 2}:
+	elif 0 <= x + 1 < 20 and 0 <= y + 1 < 20 and plateau[y + 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y + 1][x - 1] in {1, 2}:
+	elif 0 <= x - 1 < 20 and 0 <= y + 1 < 20 and plateau[y + 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y][x + 1] in {1, 2}:
+	elif 0 <= x + 1 < 20 and 0 <= y < 20 and plateau[y][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y][x - 1] in {1, 2}:
+	elif 0 <= x - 1 < 20 and 0 <= y < 20 and plateau[y][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
 		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
@@ -283,7 +283,7 @@ def dessine_grille(x, y, plateau, tir=False):
 			elif plateau[j][i] == 2:
 				carre(i + x, j + y, "white", "cyan")
 			elif plateau[j][i] == 3:
-				point((i + x) *taille_case + taille_case + taille_case // 2, (j + y)*taille_case +taille_case + taille_case // 2, couleur='black', epaisseur=5)
+				point((i + x) *taille_case + taille_case + taille_case // 2, (j + y)*taille_case +taille_case + taille_case // 2, couleur='#00ff00', epaisseur=5)
 			elif plateau[j][i] == 4:
 				point((i + x)*taille_case + taille_case + taille_case // 2, (j + y)*taille_case +taille_case + taille_case // 2, couleur='red', epaisseur=5)
 			elif plateau[j][i] == 5:
@@ -573,6 +573,7 @@ if __name__ == "__main__":
 		attend_clic_gauche()
 	else:
 		bateaux_aleatoire(plateau1, liste_bateau_joueur1, navires)
+		bateaux_aleatoire(plateau2, liste_bateau_joueur2, navires)
 
 
 	a_gagner = False
@@ -647,8 +648,8 @@ if __name__ == "__main__":
 			if x1 < x < x2 and y1 < y < y2:
 				mode = choix_mode_2[i][0]
 				if mode == "Retour menu": #quand on clique sur retour menu ca fait rien que le bouton quitter marche 
-					menu_1 == True
-					menu_2 == False
+					menu_1 = True
+					menu_2 = False
 				if mode == "Quitter":
 					exit()
 
