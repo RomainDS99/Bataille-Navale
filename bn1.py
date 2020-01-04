@@ -57,11 +57,11 @@ def demande(taille):
 
 	"""
 	# x = int(input("abscisse de la tete du bateau: "))
-	x = my_input("abscisse de la tete du bateau: ", "int")
+	x = my_input("abscisse de la\n tete du bateau: ", "int")
 	# y = int(input("ordonnée de la tete du bateau: "))
-	y = my_input("ordonnée de la tete du bateau: ", "int")
+	y = my_input("ordonnée de la\n tete du bateau: ", "int")
 	# direction = int(input("orientation du bateau vers Nord, Est, Sud, Ouest: [0, 1, 2, 3] "))
-	direction = my_input("      orientation du bateau \nvers Nord, Est, Sud, Ouest: \n            [0, 1, 2, 3] ", "int")
+	direction = my_input("    orientation du bateau \n\t  vers\n   Nord, Est, Sud, Ouest: \n            [0, 1, 2, 3] ", "int")
 	return x, y, taille, direction
 
 
@@ -82,7 +82,7 @@ def sortie_bateau(taille, plateau, liste_bateau):
 			for elem in bateau:
 				liste_bateau[taille - 1].append(elem)
 
-
+deplacement = [(0, 0), (0, -1), (-1, -1), (1, -1), (0, 1), (1, 1), (-1, 1), (1, 0), (-1, 0)]
 def control_placement(x, y, taille, direction, plateau):
 	"""
 	fonction qui controle qu'il n'y ait pas déjà de bateau placé aux coordonnées souhaitées
@@ -96,29 +96,53 @@ def control_placement(x, y, taille, direction, plateau):
 	if direction == 0:
 		if y + 1 >= taille:
 			for i in range(y-taille + 1, y+1):
-				if plateau[i][x] != 0:
-					return False
+				for direction_x, direction_y in deplacement:
+					if 0 <= x + direction_x < 20 and 0 <= i + direction_y < 20:
+						x += direction_x
+						y = i + direction_y
+					else:
+						continue
+					if plateau[y][x] != 0:
+						return False
 			return True 
 		return False
 	if direction == 1:
 		if x + taille <= len(plateau[0]):
 			for i in range(x, x + taille):
-				if plateau[y][i] != 0:
-					return False
+				for direction_x, direction_y in deplacement:
+					if 0 <= i + direction_x < 20 and 0 <= y + direction_y < 20:
+						x = i + direction_x
+						y += direction_y
+					else:
+						continue
+					if plateau[y][x] != 0:
+						return False
 			return True
 		return False
 	if direction == 2:
 		if y + taille <= len(plateau):
 			for i in range(y, y + taille):
-				if plateau[i][x] != 0:
-					return False
+				for direction_x, direction_y in deplacement:
+					if 0 <= x + direction_x < 20 and 0 <= i + direction_y < 20:
+						x += direction_x
+						y = i + direction_y
+					else:
+						continue
+					if plateau[y][x] != 0:
+						return False
 			return True 
 		return False
 	if direction == 3:
 		if x + 1 >= taille:
 			for i in range(x-taille + 1, x+1):
-				if plateau[y][i] != 0:
-					return False
+				for direction_x, direction_y in deplacement:
+					if 0 <= i + direction_x < 20 and 0 <= y + direction_y < 20:
+						x = i + direction_x
+						y += direction_y
+					else:
+						continue
+					if plateau[y][x] != 0:
+						return False
 			return True 
 		return False
 
@@ -159,64 +183,64 @@ def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans l
 	if plateau[y][x] == 1:
 		plateau[y][x] = 2
 		print("Touché !")
-		txt = texte(50, 50, "Touché !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "Touché !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 		return True
 #en vue 
-	elif plateau[y - 1][x] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y - 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif plateau[y - 1][x - 1] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y - 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif plateau[y - 1][x + 1] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y - 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif plateau[y + 1][x] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y + 1][x] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif plateau[y + 1][x + 1] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y + 1][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif plateau[y + 1][x - 1] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y + 1][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif plateau[y][x + 1] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y][x + 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
-	elif plateau[y][x - 1] in {1, 2}:
+	elif 0 <= x < 20 and 0 <= y < 20 and plateau[y][x - 1] in {1, 2}:
 		plateau[y][x] = 4
 		print("En vue !")
-		txt = texte(50, 50, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "En vue !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 
@@ -224,7 +248,7 @@ def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans l
 	else:
 		plateau[y][x] = 3
 		print("Dommage !")
-		txt = texte(50, 50, "Dommage !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+		txt = texte(250, 700 * 5/6, "Dommage !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 		attente(1)
 		efface(txt)
 	return False
@@ -325,7 +349,7 @@ def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comm
 		else:
 			if taille_bateau:
 				print("Coulé !")
-				txt = texte(50, 50, "Coulé !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+				txt = texte(250, 700 * 5/6, "Coulé !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
 				attente(1)
 				efface(txt)
 				for elem in taille_bateau:
@@ -346,18 +370,23 @@ def gagner(plateau, liste_bateau):
 	return True
 				
 
-def bateaux_aleatoire():
+def bateaux_aleatoire(plateau, liste_bateau, navires):
 	"""
 	fonction qui permet de placer les bateaux de facon aléatoire
 	:param plateau: lst
 
 	"""
-	while not control_placement(x, y, taille, direction, plateau):
-		x = randint(0, 19)
-		y = randint(0, 19)
-		direction = randint(0, 3)
-		taille = randint(0, 6)
-	bateau = placer_bateau(x, y, taille, direction, plateau)
+	for liste_taille_bateau in navires:
+		for taille in liste_taille_bateau:
+			while True:
+				x = randint(0, 19)
+				y = randint(0, 19)
+				direction = randint(0, 3)
+				if control_placement(x, y, taille, direction, plateau):
+					bateau = placer_bateau(x, y, taille, direction, plateau)
+					for elem in bateau:
+						liste_bateau[taille - 1].append(elem)
+					break
 
 
 def _input(msg, reponse_defaut):
@@ -382,10 +411,10 @@ def _input(msg, reponse_defaut):
 
         efface("texte_input")
         texte(
-            1300 * 4 / 5 + 120,
-            700 //4,
+            1300 * 4 / 5 + 60,
+            700 //4 + 30,
             texte_,
-            couleur="white",
+            couleur="#ff0000",
             ancrage="center",
             tag="texte_input",
         )
@@ -406,7 +435,7 @@ def my_input(msg, type_retour, reponse_defaut=""):
     )
 
     while True:
-        texte(1300 * 4 / 5 + 60, 700 // 4 - 90,
+        texte(1300 * 4 / 5 + 60, 700 // 4 - 70,
             #1500 * 4 / 5,
             #1000 // 4 - 100 - 25,
             msg,
@@ -474,6 +503,9 @@ if __name__ == "__main__":
 		for y in range(7-x):
 			navires[-1].append(x)
 
+	plateau1 = init(20)
+	plateau2 = init(20)
+	
 
 	cree_fenetre(1300, 700)
 
@@ -483,14 +515,14 @@ if __name__ == "__main__":
 		ligne(200, 150, 200, 240, epaisseur=3)
 		polygone((75, 240, 325, 240, 300, 270, 100, 270, 75, 240), epaisseur=3)
 
-		for i in range(len(choix_mode)):
+		for mode in choix_mode:
 			texte(640, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
-			if choix_mode[i][0] != "Mode prof":
-				texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
+			if mode[0] != "Mode prof":
+				texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
 			elif not mode_prof:
-				texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='#ff0000', police='Helvetica', taille=30)
+				texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='#ff0000', police='Helvetica', taille=30)
 			else:
-				texte(choix_mode[i][1], choix_mode[i][2], choix_mode[i][0], ancrage = "center", couleur='#00ff00', police='Helvetica', taille=30)
+				texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='#00ff00', police='Helvetica', taille=30)
 
 		(x, y) = attend_clic_gauche()
 		for i in range(len(choix_mode)):
@@ -500,33 +532,44 @@ if __name__ == "__main__":
 				if mode == "Mode prof":
 					mode_prof = not mode_prof
 
-				elif mode != "Quitter":
+				elif mode == "Mode classique":
 					jouer = True 
 					menu = False
+					aleatoire = False
+				elif mode == "Mode aléatoire":
+					jouer = True 
+					menu = False
+					aleatoire = True
 				else:
 					exit()
 		efface_tout()
 
 	debut = time()
-	plateau1 = init(20)
-	plateau2 = init(20)
 
+	if not aleatoire:
+		nb_bateau = my_input("nombre de bateaux\n         (0 = tout)", "int")
+		if nb_bateau == 0:
+			debut = 0
+			fin = 6
+		else:
+			debut = nb_bateau - 1
+			fin = nb_bateau
 
-	dessine_grille(0, 0, plateau1)
+		dessine_grille(0, 0, plateau1)
 
-	dessine_bateau(plateau1, 25, 430, 'j1', 0, 0, liste_bateau_joueur1, navires[:1])
-	attend_clic_gauche()
-	efface_tout()
+		dessine_bateau(plateau1, 25, 430, 'j1', 0, 0, liste_bateau_joueur1, navires[debut:fin])
+		attend_clic_gauche()
+		efface_tout()
 
-	txt = texte(1300/2, 700/2, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
-	attente(3)
-	efface(txt)
-	
-	dessine_grille(25, 0, plateau2)
-	dessine_bateau(plateau2, 520, 430, 'j2', 25, 0, liste_bateau_joueur2, navires[:1])
-	attend_clic_gauche()
-	print(liste_bateau_joueur1)
-	print(liste_bateau_joueur2)
+		txt = texte(1300/2, 700/2, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+		attente(3)
+		efface(txt)
+		
+		dessine_grille(0, 0, plateau2)
+		dessine_bateau(plateau2, 25, 430, 'j2', 0, 0, liste_bateau_joueur2, navires[debut:fin])
+		attend_clic_gauche()
+	else:
+		bateaux_aleatoire(plateau1, liste_bateau_joueur1, navires)
 
 
 	a_gagner = False
