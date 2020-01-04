@@ -479,8 +479,8 @@ def affichage(x, plateau, x2, plateau_2, prof):
 if __name__ == "__main__":
 
 	# initialisation du jeu 
-	score = 0
-	menu = True
+	menu_1 = True
+	menu_2 = True
 	jouer = False
 	joueur_1 = False
 	joueur_2 = False
@@ -489,7 +489,10 @@ if __name__ == "__main__":
 	choix_mode = [("Mode classique", 1300/2, 700*1/3), 
 		("Mode aléatoire", 1300/2, 700/2),
 		("Mode prof", 1300/2, 700*2/3), 
-		("Quitter", 1300/2, 700-25)] 
+		("Quitter", 1300/2, 700-25)]
+	
+	choix_mode_2 = [("Retour menu", 1300/2, 700*1/3),  
+		("Quitter", 1300/2, 700*2/3)]
 
 	liste_bateau_joueur1 = [[] for i in range(6)]
 	liste_bateau_joueur2 = [[] for i in range(6)]
@@ -509,7 +512,7 @@ if __name__ == "__main__":
 
 	cree_fenetre(1300, 700)
 
-	while menu:
+	while menu_1:
 		rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
 		polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
 		ligne(200, 150, 200, 240, epaisseur=3)
@@ -534,11 +537,11 @@ if __name__ == "__main__":
 
 				elif mode == "Mode classique":
 					jouer = True 
-					menu = False
+					menu_1 = False
 					aleatoire = False
 				elif mode == "Mode aléatoire":
 					jouer = True 
-					menu = False
+					menu_1 = False
 					aleatoire = True
 				else:
 					exit()
@@ -588,6 +591,9 @@ if __name__ == "__main__":
 		while tour_j1 and not a_gagner:
 			efface_tout()
 			print("j1")
+			txt = texte(1300/2, 700/2, "C'est au tour de j1 de tirer !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+			attente(2)
+			efface(txt)
 
 			affichage(0, plateau1, 42, plateau2, mode_prof)
 			texte(25, 425, "Grille de tirs de J1")
@@ -598,6 +604,11 @@ if __name__ == "__main__":
 
 			a_gagner = gagner(plateau2, liste_bateau_joueur2)
 			if a_gagner:
+				efface_tout()	
+				texte(1300 // 2, 700 // 2, "J1 a gagné !! ", ancrage = "center", couleur='red', police='Helvetica', taille=50)
+				attente(4)
+				efface_tout()
+
 				gagnant = "Joueur 1"
 
 		#joueur 2
@@ -605,6 +616,10 @@ if __name__ == "__main__":
 		while tour_j2 and not a_gagner:
 			efface_tout()
 			print("j2")
+			txt = texte(1300/2, 700/2, "C'est au tour de j2 de tirer !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+			attente(1.5)
+			efface(txt)
+
 			affichage(0, plateau2, 42, plateau1, mode_prof)
 			texte(25, 425, "Grille de tirs de J2")
 			texte(440, 425, "Grille de bateaux de J2")
@@ -614,12 +629,32 @@ if __name__ == "__main__":
 
 			a_gagner = gagner(plateau1, liste_bateau_joueur1)
 			if a_gagner:
-				gagnant = "Joueur 2"
+				efface_tout()
+				texte(1300 // 2, 700 // 2, "J2 a gagné !! ", ancrage = "center", couleur='red', police='Helvetica', taille=50)
+				attente(4)
+				efface_tout()
+				#gagnant = "Joueur 2"
+				
+	while menu_2:
+		rectangle(0, 0, 1300, 700, couleur='darkblue', remplissage='darkblue')
+		for i in range(len(choix_mode_2)):
+			texte(1300/2, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
+			texte(choix_mode_2[i][1], choix_mode_2[i][2], choix_mode_2[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
 
+		(x, y) = attend_clic_gauche()
+		for i in range(len(choix_mode_2)):
+			x1, y1 , x2, y2 = coordonnées_clic(*choix_mode_2[i])
+			if x1 < x < x2 and y1 < y < y2:
+				mode = choix_mode_2[i][0]
+				if mode == "Retour menu": #quand on clique sur retour menu ca fait rien que le bouton quitter marche 
+					menu_1 == True
+					menu_2 == False
+				if mode == "Quitter":
+					exit()
 
 
 	efface_tout()
-	texte(1300 // 2, 700 // 2, "Gagnant: {}".format(gagnant), ancrage = "center", couleur='red', police='Helvetica', taille=50)
+	#texte(1300 // 2, 700 // 2, "Gagnant: {}".format(gagnant), ancrage = "center", couleur='red', police='Helvetica', taille=50)
 
 
 		
