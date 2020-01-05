@@ -551,7 +551,7 @@ if __name__ == "__main__":
 	debut = time()
 
 	if not aleatoire:
-		nb_bateau = my_input("Nombre de bateaux\n (0: tout;\n 1: 1 bateau de 6 cases;\n 2: 2 bateaux de 5 cases;...;\n 6: 6 bateaux de 1 case)", "int")
+		nb_bateau = my_input("    Nombre de bateaux\n   (0: tout;\n   1: 1 bateau de 6 cases;\n   2: 2 bateaux de 5 cases;...;\n   6: 6 bateaux de 1 case)", "int")
 		if nb_bateau == 0:
 			debut = 0
 			fin = 6
