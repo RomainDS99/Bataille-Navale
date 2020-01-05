@@ -15,6 +15,7 @@ def init(taille):
 	return plateau
 
 
+
 def affiche_plateau(plateau):
 	for ligne in plateau:
 		print(ligne)
@@ -79,8 +80,7 @@ def sortie_bateau(taille, plateau, liste_bateau):
 		if control_placement(x, y, taille, direction, plateau):
 			bateau = placer_bateau(x, y, taille, direction, plateau)
 			placement = True
-			for elem in bateau:
-				liste_bateau[taille - 1].append(elem)
+			liste_bateau[taille - 1].append(bateau)
 
 deplacement = [(0, 0), (0, -1), (-1, -1), (1, -1), (0, 1), (1, 1), (-1, 1), (1, 0), (-1, 0)]
 def control_placement(x, y, taille, direction, plateau):
@@ -335,7 +335,7 @@ def coordonnées_clic(texte, x, y):
 	return (x - (largeur / 2), y - (hauteur / 2), x + (largeur / 2), y + (hauteur / 2))
 
 
-def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comment faire 
+def couler(plateau, liste_bateau): 
 	"""
 	fonction qui détermine si un bateau est coulé
 	:param plateau: lst
@@ -343,17 +343,18 @@ def couler(plateau, liste_bateau): #faut faire cette putain de fonction jsp comm
 
 	""" 
 	for taille_bateau in liste_bateau:
-		for elem in taille_bateau:
-			if plateau[elem[1]][elem[0]] != 2:		#touché
-				break
-		else:
-			if taille_bateau:
-				print("Coulé !")
-				txt = texte(250, 700 * 5/6, "Coulé !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
-				attente(1)
-				efface(txt)
-				for elem in taille_bateau:
-					plateau[elem[1]][elem[0]] = 5
+		for bateau in taille_bateau:
+			for elem in bateau:
+				if plateau[elem[1]][elem[0]] != 2:		#touché
+					break
+			else:
+				if bateau:
+					print("Coulé !")
+					txt = texte(250, 700 * 5/6, "Coulé !", couleur='magenta', ancrage='nw', police='Helvetica', taille=50, tag='')
+					attente(1)
+					efface(txt)
+					for elem in bateau:
+						plateau[elem[1]][elem[0]] = 5
 
 
 def gagner(plateau, liste_bateau):
@@ -364,9 +365,10 @@ def gagner(plateau, liste_bateau):
 	
 	"""
 	for taille_bateau in liste_bateau:
-		for elem in taille_bateau:
-			if plateau[elem[1]][elem[0]] != 5:
-				return False
+		for bateau in taille_bateau:
+			for elem in bateau:
+				if plateau[elem[1]][elem[0]] != 5:
+					return False
 	return True
 				
 
@@ -384,8 +386,7 @@ def bateaux_aleatoire(plateau, liste_bateau, navires):
 				direction = randint(0, 3)
 				if control_placement(x, y, taille, direction, plateau):
 					bateau = placer_bateau(x, y, taille, direction, plateau)
-					for elem in bateau:
-						liste_bateau[taille - 1].append(elem)
+					liste_bateau[taille - 1].append(bateau)
 					break
 
 
