@@ -171,7 +171,7 @@ def dessine_bateau(plateau, x, y, j, placement_x, placement_y, liste_bateau, nav
 		efface(texte1)
 
 	
-def tir(x, y, plateau): #faut transformer cette merde pour que ca affiche dans la fenetre 
+def tir(x, y, plateau):
 	"""
 	fonction qui détermine ou le tir a été lancé, sur un bateau ou dans l'eau,
 	:param x: int 0 <= x <= 19
@@ -480,12 +480,6 @@ def affichage(x, plateau, x2, plateau_2, prof):
 if __name__ == "__main__":
 
 	# initialisation du jeu 
-	menu_1 = True
-	menu_2 = True
-	jouer = False
-	joueur_1 = False
-	joueur_2 = False
-	mode_prof = False
 
 	choix_mode = [("Mode classique", 1300/2, 700*1/3), 
 		("Mode aléatoire", 1300/2, 700/2),
@@ -495,25 +489,34 @@ if __name__ == "__main__":
 	choix_mode_2 = [("Retour menu", 1300/2, 700*1/3),  
 		("Quitter", 1300/2, 700*2/3)]
 
-	liste_bateau_joueur1 = [[] for i in range(6)]
-	liste_bateau_joueur2 = [[] for i in range(6)]
-	# liste_bateau = []
-	# for i in range(6):
-	# 	liste_bateau.append([])
-
+	
 	navires = []
 	for x in range(6, 0, -1):
 		navires.append([])
 		for y in range(7-x):
 			navires[-1].append(x)
 
-	plateau1 = init(20)
-	plateau2 = init(20)
-	
-
 	cree_fenetre(1300, 700)
+
 	while True: 
+		menu_1 = True
+		menu_2 = True
+		jouer = False
+		joueur_1 = False
+		joueur_2 = False
+		mode_prof = False
+
+		liste_bateau_joueur1 = [[] for i in range(6)]
+		liste_bateau_joueur2 = [[] for i in range(6)]
+		# liste_bateau = []
+		# for i in range(6):
+		# 	liste_bateau.append([])
+
+		plateau1 = init(20)
+		plateau2 = init(20)
+		
 		while menu_1:
+			
 			rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
 			polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
 			ligne(200, 150, 200, 240, epaisseur=3)
@@ -581,12 +584,6 @@ if __name__ == "__main__":
 		gagnant = None
 		while jouer and not a_gagner:
 			efface_tout()
-			# affiche_plateau(plateau1)
-
-			# dessine_grille(0, 0, plateau1)
-			# dessine_grille(25, 0, plateau2)
-			# dessine_grille(0, 25, plateau2, True)
-			# dessine_grille(25, 25, plateau1, True)
 
 			#joueur 1
 			tour_j1 = True
@@ -648,7 +645,7 @@ if __name__ == "__main__":
 				x1, y1 , x2, y2 = coordonnées_clic(*choix_mode_2[i])
 				if x1 < x < x2 and y1 < y < y2:
 					mode = choix_mode_2[i][0]
-					if mode == "Retour menu": #quand on clique sur retour menu ca fait rien que le bouton quitter marche 
+					if mode == "Retour menu":  
 						menu_1 = True
 						menu_2 = False
 					if mode == "Quitter":
@@ -656,7 +653,7 @@ if __name__ == "__main__":
 
 
 	efface_tout()
-	#texte(1300 // 2, 700 // 2, "Gagnant: {}".format(gagnant), ancrage = "center", couleur='red', police='Helvetica', taille=50)
+	
 
 
 		
