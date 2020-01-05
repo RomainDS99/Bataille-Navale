@@ -512,147 +512,147 @@ if __name__ == "__main__":
 	
 
 	cree_fenetre(1300, 700)
+	while True: 
+		while menu_1:
+			rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
+			polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
+			ligne(200, 150, 200, 240, epaisseur=3)
+			polygone((75, 240, 325, 240, 300, 270, 100, 270, 75, 240), epaisseur=3)
 
-	while menu_1:
-		rectangle(0, 0, 1500, 1000, couleur='darkblue', remplissage='darkblue')
-		polygone((200, 150, 300, 230, 100, 230), epaisseur=3)
-		ligne(200, 150, 200, 240, epaisseur=3)
-		polygone((75, 240, 325, 240, 300, 270, 100, 270, 75, 240), epaisseur=3)
-
-		for mode in choix_mode:
-			texte(640, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
-			if mode[0] != "Mode prof":
-				texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
-			elif not mode_prof:
-				texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='#ff0000', police='Helvetica', taille=30)
-			else:
-				texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='#00ff00', police='Helvetica', taille=30)
-
-		(x, y) = attend_clic_gauche()
-		for i in range(len(choix_mode)):
-			x1, y1 , x2, y2 = coordonnées_clic(*choix_mode[i])
-			if x1 < x < x2 and y1 < y < y2:
-				mode = choix_mode[i][0]
-				if mode == "Mode prof":
-					mode_prof = not mode_prof
-
-				elif mode == "Mode classique":
-					jouer = True 
-					menu_1 = False
-					aleatoire = False
-				elif mode == "Mode aléatoire":
-					jouer = True 
-					menu_1 = False
-					aleatoire = True
+			for mode in choix_mode:
+				texte(640, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
+				if mode[0] != "Mode prof":
+					texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
+				elif not mode_prof:
+					texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='#ff0000', police='Helvetica', taille=30)
 				else:
-					exit()
-		efface_tout()
+					texte(mode[1], mode[2], mode[0], ancrage = "center", couleur='#00ff00', police='Helvetica', taille=30)
 
-	debut = time()
+			(x, y) = attend_clic_gauche()
+			for i in range(len(choix_mode)):
+				x1, y1 , x2, y2 = coordonnées_clic(*choix_mode[i])
+				if x1 < x < x2 and y1 < y < y2:
+					mode = choix_mode[i][0]
+					if mode == "Mode prof":
+						mode_prof = not mode_prof
 
-	if not aleatoire:
-		nb_bateau = my_input("    Nombre de bateaux\n   (0: tout;\n   1: 1 bateau de 6 cases;\n   2: 2 bateaux de 5 cases;...;\n   6: 6 bateaux de 1 case)", "int")
-		if nb_bateau == 0:
-			debut = 0
-			fin = 6
+					elif mode == "Mode classique":
+						jouer = True 
+						menu_1 = False
+						aleatoire = False
+					elif mode == "Mode aléatoire":
+						jouer = True 
+						menu_1 = False
+						aleatoire = True
+					else:
+						exit()
+			efface_tout()
+
+		debut = time()
+
+		if not aleatoire:
+			nb_bateau = my_input("    Nombre de bateaux\n   (0: tout;\n   1: 1 bateau de 6 cases;\n   2: 2 bateaux de 5 cases;...;\n   6: 6 bateaux de 1 case)", "int")
+			if nb_bateau == 0:
+				debut = 0
+				fin = 6
+			else:
+				debut = nb_bateau - 1
+				fin = nb_bateau
+
+			dessine_grille(0, 0, plateau1)
+
+			dessine_bateau(plateau1, 25, 430, 'j1', 0, 0, liste_bateau_joueur1, navires[debut:fin])
+			attend_clic_gauche()
+			efface_tout()
+
+			txt = texte(1300/2, 700/2, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+			attente(3)
+			efface(txt)
+
+			dessine_grille(0, 0, plateau2)
+			dessine_bateau(plateau2, 25, 430, 'j2', 0, 0, liste_bateau_joueur2, navires[debut:fin])
+			attend_clic_gauche()
 		else:
-			debut = nb_bateau - 1
-			fin = nb_bateau
-
-		dessine_grille(0, 0, plateau1)
-
-		dessine_bateau(plateau1, 25, 430, 'j1', 0, 0, liste_bateau_joueur1, navires[debut:fin])
-		attend_clic_gauche()
-		efface_tout()
-
-		txt = texte(1300/2, 700/2, "C'est au tour de j2 de placer ses bateaux !", couleur='red', ancrage='center', police='Helvetica', taille=50)
-		attente(3)
-		efface(txt)
-		
-		dessine_grille(0, 0, plateau2)
-		dessine_bateau(plateau2, 25, 430, 'j2', 0, 0, liste_bateau_joueur2, navires[debut:fin])
-		attend_clic_gauche()
-	else:
-		bateaux_aleatoire(plateau1, liste_bateau_joueur1, navires)
-		bateaux_aleatoire(plateau2, liste_bateau_joueur2, navires)
+			bateaux_aleatoire(plateau1, liste_bateau_joueur1, navires)
+			bateaux_aleatoire(plateau2, liste_bateau_joueur2, navires)
 
 
-	a_gagner = False
-	gagnant = None
-	while jouer and not a_gagner:
-		efface_tout()
-		# affiche_plateau(plateau1)
-
-		# dessine_grille(0, 0, plateau1)
-		# dessine_grille(25, 0, plateau2)
-		# dessine_grille(0, 25, plateau2, True)
-		# dessine_grille(25, 25, plateau1, True)
-
-		#joueur 1
-		tour_j1 = True
-		while tour_j1 and not a_gagner:
+		a_gagner = False
+		gagnant = None
+		while jouer and not a_gagner:
 			efface_tout()
-			print("j1")
-			txt = texte(1300/2, 700/2, "C'est au tour de j1 de tirer !", couleur='red', ancrage='center', police='Helvetica', taille=50)
-			attente(2)
-			efface(txt)
+			# affiche_plateau(plateau1)
 
-			affichage(0, plateau1, 42, plateau2, mode_prof)
-			texte(25, 425, "Grille de tirs de J1")
-			texte(440, 425, "Grille de bateaux de J1")
-			tour_j1 = touch(plateau2, liste_bateau_joueur2)
-			affichage(0, plateau1, 42, plateau2, mode_prof)
-			attend_clic_gauche()
+			# dessine_grille(0, 0, plateau1)
+			# dessine_grille(25, 0, plateau2)
+			# dessine_grille(0, 25, plateau2, True)
+			# dessine_grille(25, 25, plateau1, True)
 
-			a_gagner = gagner(plateau2, liste_bateau_joueur2)
-			if a_gagner:
-				efface_tout()	
-				texte(1300 // 2, 700 // 2, "J1 a gagné !! ", ancrage = "center", couleur='red', police='Helvetica', taille=50)
-				attente(4)
+			#joueur 1
+			tour_j1 = True
+			while tour_j1 and not a_gagner:
 				efface_tout()
+				print("j1")
+				txt = texte(1300/2, 700/2, "C'est au tour de j1 de tirer !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+				attente(2)
+				efface(txt)
 
-				gagnant = "Joueur 1"
+				affichage(0, plateau1, 42, plateau2, mode_prof)
+				texte(25, 425, "Grille de tirs de J1")
+				texte(440, 425, "Grille de bateaux de J1")
+				tour_j1 = touch(plateau2, liste_bateau_joueur2)
+				affichage(0, plateau1, 42, plateau2, mode_prof)
+				attend_clic_gauche()
 
-		#joueur 2
-		tour_j2 = True
-		while tour_j2 and not a_gagner:
-			efface_tout()
-			print("j2")
-			txt = texte(1300/2, 700/2, "C'est au tour de j2 de tirer !", couleur='red', ancrage='center', police='Helvetica', taille=50)
-			attente(1.5)
-			efface(txt)
+				a_gagner = gagner(plateau2, liste_bateau_joueur2)
+				if a_gagner:
+					efface_tout()	
+					texte(1300 // 2, 700 // 2, "J1 a gagné !! ", ancrage = "center", couleur='red', police='Helvetica', taille=50)
+					attente(4)
+					efface_tout()
 
-			affichage(0, plateau2, 42, plateau1, mode_prof)
-			texte(25, 425, "Grille de tirs de J2")
-			texte(440, 425, "Grille de bateaux de J2")
-			tour_j2 = touch(plateau1, liste_bateau_joueur1)
-			affichage(0, plateau2, 42, plateau1, mode_prof)
-			attend_clic_gauche()
+					gagnant = "Joueur 1"
 
-			a_gagner = gagner(plateau1, liste_bateau_joueur1)
-			if a_gagner:
+			#joueur 2
+			tour_j2 = True
+			while tour_j2 and not a_gagner:
 				efface_tout()
-				texte(1300 // 2, 700 // 2, "J2 a gagné !! ", ancrage = "center", couleur='red', police='Helvetica', taille=50)
-				attente(4)
-				efface_tout()
-				#gagnant = "Joueur 2"
-				
-	while menu_2:
-		rectangle(0, 0, 1300, 700, couleur='darkblue', remplissage='darkblue')
-		for i in range(len(choix_mode_2)):
-			texte(1300/2, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
-			texte(choix_mode_2[i][1], choix_mode_2[i][2], choix_mode_2[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
+				print("j2")
+				txt = texte(1300/2, 700/2, "C'est au tour de j2 de tirer !", couleur='red', ancrage='center', police='Helvetica', taille=50)
+				attente(1.5)
+				efface(txt)
 
-		(x, y) = attend_clic_gauche()
-		for i in range(len(choix_mode_2)):
-			x1, y1 , x2, y2 = coordonnées_clic(*choix_mode_2[i])
-			if x1 < x < x2 and y1 < y < y2:
-				mode = choix_mode_2[i][0]
-				if mode == "Retour menu": #quand on clique sur retour menu ca fait rien que le bouton quitter marche 
-					menu_1 = True
-					menu_2 = False
-				if mode == "Quitter":
-					exit()
+				affichage(0, plateau2, 42, plateau1, mode_prof)
+				texte(25, 425, "Grille de tirs de J2")
+				texte(440, 425, "Grille de bateaux de J2")
+				tour_j2 = touch(plateau1, liste_bateau_joueur1)
+				affichage(0, plateau2, 42, plateau1, mode_prof)
+				attend_clic_gauche()
+
+				a_gagner = gagner(plateau1, liste_bateau_joueur1)
+				if a_gagner:
+					efface_tout()
+					texte(1300 // 2, 700 // 2, "J2 a gagné !! ", ancrage = "center", couleur='red', police='Helvetica', taille=50)
+					attente(4)
+					efface_tout()
+					#gagnant = "Joueur 2"
+
+		while menu_2:
+			rectangle(0, 0, 1300, 700, couleur='darkblue', remplissage='darkblue')
+			for i in range(len(choix_mode_2)):
+				texte(1300/2, 50, 'Bataille Navale', ancrage = "center", couleur='red', police='Helvetica', taille=50)
+				texte(choix_mode_2[i][1], choix_mode_2[i][2], choix_mode_2[i][0], ancrage = "center", couleur='white', police='Helvetica', taille=30)
+
+			(x, y) = attend_clic_gauche()
+			for i in range(len(choix_mode_2)):
+				x1, y1 , x2, y2 = coordonnées_clic(*choix_mode_2[i])
+				if x1 < x < x2 and y1 < y < y2:
+					mode = choix_mode_2[i][0]
+					if mode == "Retour menu": #quand on clique sur retour menu ca fait rien que le bouton quitter marche 
+						menu_1 = True
+						menu_2 = False
+					if mode == "Quitter":
+						exit()
 
 
 	efface_tout()
